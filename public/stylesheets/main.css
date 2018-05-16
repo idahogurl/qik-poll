@@ -1,0 +1,73 @@
+.fa {
+  padding-right: 10px;
+  margin-right: 10px; }
+  .fa.fa-file-text {
+    border-right: 1px solid whitesmoke; }
+
+.fb-login-button {
+  background-color: #4c69ba;
+  color: white;
+  cursor: pointer; }
+
+#logo {
+  width: 400px;
+  margin: auto;
+  text-align: center; }
+
+.facebook-login {
+  vertical-align: text-bottom; }
+
+.navbar-wrapper {
+  width: 100%;
+  padding: 10px 0 0 0; }
+
+nav {
+  background-color: #ffcc00;
+  margin: 20px 0 0 0 !important;
+  padding: 20px 0 20px 0;
+  border-radius: 0 !important; }
+
+.commands-wrapper {
+  padding: 10px 10px 0 10px;
+  background-color: #ac2925;
+  width: 100% !important; }
+
+.main {
+  background-color: skyblue;
+  border: 1px solid steelblue;
+  margin: 10px 10px 0 10px;
+  border-radius: 10px 10px 0 0; }
+
+.first-col {
+  border-radius: 10px 0 0 0; }
+
+.col {
+  padding-bottom: 10px; }
+  .col.selected {
+    background-color: #0099ff; }
+    .col.selected a {
+      color: white; }
+
+#content {
+  margin-top: 20px; }
+
+#newOption {
+  width: 400px; }
+
+.chart {
+  width: 600px;
+  height: 300px;
+  border: 1px solid Gainsboro;
+  position: relative;
+  margin: 10px; }
+
+#noVotes {
+  text-align: center;
+  font-size: 18pt;
+  color: Gainsboro;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200px;
+  height: 100px;
+  margin: -50px 0 0 -100px; }
