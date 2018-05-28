@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       field: 'poll_option_id',
       references: {
-        model: 'poll',
+        model: 'poll_options',
         key: 'id',
       },
     },
@@ -39,9 +39,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     ],
   });
-  UserSelection.associate = ({ User, PollOption }) => {
-    UserSelection.belongsTo(User);
-    UserSelection.belongsTo(PollOption);
+  UserSelection.associate = ({ user, pollOption }) => {
+    UserSelection.belongsTo(user);
+    UserSelection.belongsTo(pollOption);
   };
   return UserSelection;
 };

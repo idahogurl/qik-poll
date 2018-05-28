@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 
-export default function IndexScreen(props) {
+export default function IndexScreen() {
   return (
     <div>
       <div className="navbar-wrapper">

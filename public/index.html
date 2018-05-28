@@ -5,7 +5,28 @@
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"></link>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
     <link href="stylesheets/main.css" rel="stylesheet" type="text/css"></link>
-    
+    <link href="stylesheets/awn.css" rel="stylesheet" type="text/css"></link>
+		<script>
+		  window.fbAsyncInit = function() {
+		    FB.init({
+		      appId      : '{your-app-id}',
+		      cookie     : true,
+		      xfbml      : true,
+		      version    : '{latest-api-version}'
+		    });
+
+		    FB.AppEvents.logPageView();
+
+		  };
+
+		  (function(d, s, id){
+		     var js, fjs = d.getElementsByTagName(s)[0];
+		     if (d.getElementById(id)) {return;}
+		     js = d.createElement(s); js.id = id;
+		     js.src = "https://connect.facebook.net/en_US/sdk.js";
+		     fjs.parentNode.insertBefore(js, fjs);
+		   }(document, 'script', 'facebook-jssdk'));
+		</script>
   </head>
 	<body>
 		<div id="app" />

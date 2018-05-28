@@ -1,0 +1,159 @@
+scalar UUID
+scalar JSON
+scalar Date
+scalar Void
+
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type GenericResponse {
+  success: Boolean
+}
+
+type Mutation {
+  createUser(input: UserInput!): User
+  updateUser(id: UUID!, input: UserInput!): User
+  deleteUser(id: UUID!): GenericResponse
+  createUserSelection(userId: UUID!, pollOptionId: UUID): UserSelection
+  updateUserSelection(id: UUID!, userId: UUID, pollOptionId: UUID): UserSelection
+  deleteUserSelection(id: UUID!): GenericResponse
+  createPoll(userId: UUID!, prompt: String!): Poll
+  updatePoll(id: UUID!, userId: UUID, prompt: String!): Poll
+  deletePoll(id: UUID!): GenericResponse
+  createPollOption(pollId: UUID!, option: String!): PollOption
+  updatePollOption(id: UUID!,  option: String!): PollOption
+  deletePollOption(id: UUID!): GenericResponse
+}
+
+type UserInput {
+  name: String!,
+  email: String!,
+  password: String!,
+  passwordResetToken: String,
+  passwordResetExpires: String,
+  gender: String,
+  location: String,
+  website: String,
+  picture: String,
+  facebook: String,
+  twitter: String,
+  google: String,
+  vk: String
+}
+
+type Poll {
+  id: UUID!
+  userId: UUID!
+  prompt: String!
+  createdAt: Date!
+  updatedAt: Date!
+  deletedAt: Date!
+  pollOptions(
+    limit: Int
+    order: String
+    where: JSON
+    offset: Int
+  ): [PollOption]
+  user: User
+}
+
+type PollOption {
+  id: UUID!
+  pollId: UUID!
+  createdAt: Date!
+  updatedAt: Date!
+  deletedAt: Date!
+  userSelections(
+    limit: Int
+    order: String
+    where: JSON
+    offset: Int
+  ): [UserSelection]
+  poll: Poll
+}
+
+type Query {
+  users(
+    limit: Int
+    order: String
+    where: JSON
+    offset: Int
+  ): [User]
+  user(
+    id: UUID
+    where: JSON
+  ): User
+  userSelections(
+    limit: Int
+    order: String
+    where: JSON
+    offset: Int
+  ): [UserSelection]
+  userSelection(
+    id: UUID
+    where: JSON
+  ): UserSelection
+  polls(
+    limit: Int
+    order: String
+    where: JSON
+    offset: Int
+  ): [Poll]
+  poll(
+    id: UUID
+    where: JSON
+  ): Poll
+  pollOptions(
+    limit: Int
+    order: String
+    where: JSON
+    offset: Int
+  ): [PollOption]
+  pollOption(
+    id: UUID
+    where: JSON
+  ): PollOption
+}
+
+type User {
+  id: UUID!
+  name: String!
+  email: String!
+  password: String!
+  passwordResetToken: String
+  passwordResetExpires: String
+  gender: String
+  location: String
+  website: String
+  picture: String
+  facebook: String
+  twitter: String
+  google: String
+  vk: String
+  createdAt: Date!
+  updatedAt: Date!
+  deletedAt: Date!
+  userSelections(
+    limit: Int
+    order: String
+    where: JSON
+    offset: Int
+  ): [UserSelection]
+  polls(
+    limit: Int
+    order: String
+    where: JSON
+    offset: Int
+  ): [Poll]
+}
+
+type UserSelection {
+  id: UUID!
+  userId: UUID!
+  pollOptionId: UUID
+  poll: Poll
+  pollOption: PollOption
+  user: User
+}

@@ -9,6 +9,10 @@ module.exports = {
           allowNull: false,
           unique: true,
         },
+        first_name: {
+          type: Sequelize.DataTypes.STRING,
+          allowNull: false,
+        },
         name: {
           type: Sequelize.DataTypes.STRING,
           allowNull: false,
@@ -21,24 +25,6 @@ module.exports = {
           unique: true,
           allowNull: false,
         },
-        password: {
-          type: Sequelize.DataTypes.STRING,
-          allowNull: false,
-        },
-        password_reset_token: {
-          type: Sequelize.DataTypes.STRING,
-        },
-        password_reset_expires: {
-          type: Sequelize.DataTypes.DATE,
-        },
-        gender: Sequelize.DataTypes.STRING,
-        location: Sequelize.DataTypes.STRING,
-        website: Sequelize.DataTypes.STRING,
-        picture: Sequelize.DataTypes.STRING,
-        facebook: Sequelize.DataTypes.STRING,
-        twitter: Sequelize.DataTypes.STRING,
-        google: Sequelize.DataTypes.STRING,
-        vk: Sequelize.DataTypes.STRING,
         created_at: {
           type: Sequelize.DATE,
           allowNull: false,
@@ -47,10 +33,7 @@ module.exports = {
           type: Sequelize.DATE,
           allowNull: false,
         },
-        deleted_at: {
-          type: Sequelize.DATE,
-          allowNull: false,
-        },
+        deleted_at: Sequelize.DATE,
       }, {
         transaction,
       });

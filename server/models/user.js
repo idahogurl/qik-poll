@@ -8,7 +8,15 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       allowNull: false,
     },
-    name: DataTypes.STRING,
+    displayName: {
+      field: 'display_name',
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     email: {
       type: DataTypes.STRING,
       validate: {
@@ -17,34 +25,6 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
       allowNull: false,
     },
-    password: {
-      type: DataTypes.STRING,
-      set: val => new Promise(((resolve, reject) => {
-        if (!val) reject();
-        bcrypt.genSalt(10, (genSaltErr, salt) => {
-          bcrypt.hash(val, salt, null, (hashErr, hash) => {
-            this.setDataValue('password', hash);
-            resolve();
-          });
-        });
-      })),
-    },
-    passwordResetToken: {
-      field: 'password_reset_token',
-      type: DataTypes.STRING,
-    },
-    passwordResetExpires: {
-      field: 'password_reset_token',
-      type: DataTypes.DATE,
-    },
-    gender: DataTypes.STRING,
-    location: DataTypes.STRING,
-    website: DataTypes.STRING,
-    picture: DataTypes.STRING,
-    facebook: DataTypes.STRING,
-    twitter: DataTypes.STRING,
-    google: DataTypes.STRING,
-    vk: DataTypes.STRING,
     gravatar: {
       type: DataTypes.VIRTUAL,
       get: () => {
@@ -70,9 +50,9 @@ module.exports = (sequelize, DataTypes) => {
     }],
   });
 
-  User.associate = ({ Poll, UserSelection }) => {
-    User.hasMany(Poll);
-    User.hasMany(UserSelection);
+  User.associate = ({ poll, userSelection }) => {
+    User.hasMany(poll);
+    User.hasMany(userSelection);
   };
 
   User.comparePassword = (password, done) => {

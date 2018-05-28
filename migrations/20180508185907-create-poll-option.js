@@ -4,29 +4,33 @@ module.exports = {
     try {
       await queryInterface.createTable('poll_options', {
         id: {
-          type: Sequelize.INTEGER,
+          type: Sequelize.DataTypes.UUID,
           primaryKey: true,
           allowNull: false,
         },
         poll_id: {
-          type: Sequelize.INTEGER,
+          type: Sequelize.DataTypes.UUID,
           references: {
             model: 'polls',
             key: 'id',
           },
           allowNull: false,
         },
+        option: {
+          type: Sequelize.DataTypes.STRING,
+          allowNull: false,
+        },
         created_at: {
           allowNull: false,
-          type: Sequelize.DATE,
+          type: Sequelize.DataTypes.DATE,
         },
         updated_at: {
           allowNull: false,
-          type: Sequelize.DATE,
+          type: Sequelize.DataTypes.DATE,
         },
         deleted_at: {
           allowNull: false,
-          type: Sequelize.DATE,
+          type: Sequelize.DataTypes.DATE,
         },
       });
 

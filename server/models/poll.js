@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
       field: 'user_id',
       type: DataTypes.UUID,
       references: {
-        model: 'Users',
+        model: 'users',
         key: 'id',
       },
       allowNull: false,
@@ -31,9 +31,9 @@ module.exports = (sequelize, DataTypes) => {
       fields: ['user_id'],
     }],
   });
-  Poll.associate = ({ User, PollOption }) => {
-    Poll.hasOne(User);
-    Poll.hasMany(PollOption);
+  Poll.associate = ({ user, pollOption }) => {
+    Poll.belongsTo(user);
+    Poll.hasMany(pollOption);
   };
   return Poll;
 };

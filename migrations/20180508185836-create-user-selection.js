@@ -21,7 +21,7 @@ module.exports = {
           type: Sequelize.DataTypes.UUID,
           field: 'poll_option_id',
           references: {
-            model: 'poll',
+            model: 'poll_options',
             key: 'id',
           },
         },
