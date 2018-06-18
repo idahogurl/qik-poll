@@ -1,4 +1,4 @@
-import { user as User } from './models';
+import { User } from './models';
 
 const sendUnauthorized = function sendUnauthorized(req, res) {
   res.clearCookie('token');

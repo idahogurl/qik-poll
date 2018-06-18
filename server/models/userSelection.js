@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const UserSelection = sequelize.define('userSelection', {
+  const UserSelection = sequelize.define('UserSelection', {
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
@@ -39,9 +39,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     ],
   });
-  UserSelection.associate = ({ user, pollOption }) => {
-    UserSelection.belongsTo(user);
-    UserSelection.belongsTo(pollOption);
+
+  UserSelection.associate = ({ User, PollOption }) => {
+    UserSelection.belongsTo(User);
+    UserSelection.belongsTo(PollOption);
   };
+
   return UserSelection;
 };

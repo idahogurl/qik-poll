@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
   const PollOption = sequelize.define(
-    'pollOption',
+    'PollOption',
     {
       id: {
         type: DataTypes.UUID,
@@ -35,8 +35,8 @@ module.exports = (sequelize, DataTypes) => {
       }],
     },
   );
-  PollOption.associate = ({ poll }) =>
-    PollOption.belongsTo(poll);
+  PollOption.associate = ({ Poll }) =>
+    PollOption.belongsTo(Poll);
 
   return PollOption;
 };

@@ -27,7 +27,7 @@ type Mutation {
   deletePollOption(id: UUID!): GenericResponse
 }
 
-type UserInput {
+input UserInput {
   name: String!,
   email: String!,
   password: String!,
@@ -47,6 +47,7 @@ type Poll {
   id: UUID!
   userId: UUID!
   prompt: String!
+  published: Boolean
   createdAt: Date!
   updatedAt: Date!
   deletedAt: Date!

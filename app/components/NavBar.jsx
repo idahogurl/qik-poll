@@ -1,20 +1,33 @@
 import React, { PureComponent } from 'react';
-import FacebookProvider, { Login } from 'react-facebook';
-import { processResponse, handleError } from '../utils/facebookResponse';
+import { get } from 'axios';
+import LoginButton from './LoginButton';
+import onError from '../utils/onError';
 
 class NavBar extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = { displayName: null };
-    this.handleResponse = this.handleResponse.bind(this);
+
+    const window = global;
+    const currentUser = JSON.parse(window.sessionStorage.getItem('currentUser'));
+
+    this.state = { displayName: currentUser ? currentUser.first_name : null };
+    this.onLogin = this.onLogin.bind(this);
+    this.onLogout = this.onLogout.bind(this);
   }
 
-  async handleResponse(data) {
+  onLogin(data) {
+    this.setState({ displayName: data.first_name });
+    const window = global;
+    window.sessionStorage.setItem('currentUser', JSON.stringify(data));
+  }
+
+  async onLogout() {
     try {
-      await processResponse(data);
-      this.setState({ displayName: data.first_name });
+      await get('/logout');
+      window.sessionStorage.clear();
+      this.setState({ displayName: null });
     } catch (err) {
-      handleError(err);
+      onError('An unknown error occurred. Contact support if this issue continues.', err);
     }
   }
 
@@ -29,24 +42,9 @@ class NavBar extends PureComponent {
           </div>
           <span className="nav navbar-right">
             <span id="userAccount" className={!displayName ? 'd-none' : 'd-block'}>
-              <span>Welcome, {displayName}! | <a className="menu" href="/logout">Logout</a></span>
+              <span>Welcome, {displayName}! | <a className="menu" onClick={this.onLogout} href="/">Logout</a></span>
             </span>
-            <FacebookProvider appId="445598382444876">
-              <Login
-                scope="email"
-                onResponse={this.handleResponse}
-                onError={handleError}
-                render={({ isWorking, onClick }) => (
-                  <button className={`btn btn-sm fb-login-button${!displayName ? ' d-block' : ' d-none'}`} onClick={onClick}>
-                    <i className="fa fa-2x fa-facebook-official align-middle" />
-                    <span className="align-middle">
-                      Login with Facebook
-                      {(isWorking) && (<span>Loading...</span>)}
-                    </span>
-                  </button>
-            )}
-              />
-            </FacebookProvider>
+            {!displayName && <LoginButton onLogin={this.onLogin} />}
           </span>
         </div>
       </nav>);

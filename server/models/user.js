@@ -2,7 +2,7 @@ import crypto from 'crypto';
 import bcrypt from 'bcrypt-nodejs';
 
 module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define('user', {
+  const User = sequelize.define('User', {
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
@@ -50,9 +50,9 @@ module.exports = (sequelize, DataTypes) => {
     }],
   });
 
-  User.associate = ({ poll, userSelection }) => {
-    User.hasMany(poll);
-    User.hasMany(userSelection);
+  User.associate = ({ Poll, UserSelection }) => {
+    User.hasMany(Poll);
+    User.hasMany(UserSelection);
   };
 
   User.comparePassword = (password, done) => {

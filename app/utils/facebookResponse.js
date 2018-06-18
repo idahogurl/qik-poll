@@ -1,19 +1,18 @@
 import axios from 'axios';
 import onError from '../utils/onError';
 
-export function processResponse(data) {
+export function processResponse(response) {
   const {
-    id, first_name: firstName, name, email,
-  } = data.profile;
+    id, first_name: displayName, name, email,
+  } = response;
 
   const user = {
     facebook: id,
-    firstName,
+    displayName,
     name,
     email,
   };
 
-  // axios
   return axios.post('/auth/facebook', user);
 }
 

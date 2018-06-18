@@ -1,0 +1,15 @@
+query polls($limit: Int, $order: String, $where: JSON, $offset: Int){
+	polls(limit: $limit, order: $order, where: $where, offset: $offset) {
+  	id
+    userId
+    prompt
+  }
+}
+
+mutation createPoll($userId: UUID!, $prompt: String!) {
+  createPoll(userId: $userId, prompt: $prompt) {
+    id,
+    userId,
+    published
+  }
+}

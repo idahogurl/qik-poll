@@ -28,10 +28,7 @@ module.exports = {
           allowNull: false,
           type: Sequelize.DataTypes.DATE,
         },
-        deleted_at: {
-          allowNull: false,
-          type: Sequelize.DataTypes.DATE,
-        },
+        deleted_at: Sequelize.DataTypes.DATE,
       });
 
       await queryInterface.addIndex('poll_options', {

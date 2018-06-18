@@ -20,6 +20,10 @@ module.exports = {
           type: Sequelize.DataTypes.STRING,
           allowNull: false,
         },
+        published: {
+          type: Sequelize.DataTypes.BOOLEAN,
+          default: 0,
+        },
         created_at: {
           type: Sequelize.DataTypes.DATE,
           allowNull: false,
@@ -28,15 +32,17 @@ module.exports = {
           type: Sequelize.DataTypes.DATE,
           allowNull: false,
         },
-        deleted_at: {
-          type: Sequelize.DataTypes.DATE,
-          allowNull: false,
-        },
+        deleted_at: Sequelize.DataTypes.DATE,
       });
       await queryInterface.addIndex('polls', {
         name: 'poll_deleted_at_index',
         method: 'BTREE',
         fields: ['deleted_at'],
+      });
+      await queryInterface.addIndex('polls', {
+        name: 'poll_published_index',
+        method: 'BTREE',
+        fields: ['published'],
       });
       await queryInterface.addIndex('polls', {
         name: 'poll_user_id_index',

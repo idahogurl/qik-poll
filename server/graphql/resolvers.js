@@ -1,5 +1,13 @@
 import GraphQLToolTypes from 'graphql-tools-types';
+import uuid from 'uuid/v4';
 import { User, Poll, PollOption, UserSelection } from '../models';
+
+const parseOrder = function parseOrder(order) {
+  const columns = order.split(', ');
+  const columnOrder = columns.map(c => c.split(' '));
+  console.log(columnOrder);
+  return columnOrder;
+};
 
 export default {
   UUID: GraphQLToolTypes.UUID({ name: 'UUID', storage: 'string' }),
@@ -30,7 +38,8 @@ export default {
       //  GenericResponse
     },
     createPoll: async (_, { userId, prompt }) => {
-      await Poll.create({ userId, prompt });
+      const id = uuid();
+      await Poll.create({ id, userId, prompt });
     },
     updatePoll: async (_, { id, prompt }) => {
       const poll = await Poll.findById(id);
@@ -58,7 +67,7 @@ export default {
       limit, order, where, offset,
     }) => {
       await poll.getPollOptions({
-        limit, order, where, offset,
+        limit, order: parseOrder(order), where: JSON.parse(where), offset,
       });
     },
   },
@@ -67,7 +76,7 @@ export default {
       limit, order, where, offset,
     }) => {
       await pollOption.getUserSelections({
-        limit, order, where, offset,
+        limit, order: parseOrder(order), where: JSON.parse(where), offset,
       });
     },
     poll: async (pollOption) => {
@@ -79,7 +88,7 @@ export default {
       limit, order, where, offset,
     }) => {
       await User.findAll({
-        limit, order, where, offset,
+        limit, order: parseOrder(order), where: JSON.parse(where), offset,
       });
     },
     user: async (_, {
@@ -91,19 +100,19 @@ export default {
       limit, order, where, offset,
     }) => {
       await UserSelection.findAll({
-        limit, order, where, offset,
+        limit, order: parseOrder(order), where: JSON.parse(where), offset,
       });
     },
     userSelection: async (_, {
       id, where,
     }) => {
-      await User.findById(id, { where });
+      await User.findById(id, { where: JSON.parse(where) });
     },
     polls: async (_, {
       limit, order, where, offset,
     }) => {
       await Poll.findAll({
-        limit, order, where, offset,
+        limit, order: parseOrder(order), where: JSON.parse(where), offset,
       });
     },
     poll: async (_, {
@@ -115,7 +124,7 @@ export default {
       limit, order, where, offset,
     }) => {
       await PollOption.findAll({
-        limit, order, where, offset,
+        limit, order: parseOrder(order), where: JSON.parse(where), offset,
       });
     },
     pollOption: async (_, {
@@ -129,14 +138,14 @@ export default {
       limit, order, where, offset,
     }) => {
       await user.getUserSelections({
-        limit, order, where, offset,
+        limit, order: parseOrder(order), where: JSON.parse(where), offset,
       });
     },
     polls: async (user, {
       limit, order, where, offset,
     }) => {
       await user.getPolls({
-        limit, order, where, offset,
+        limit, order: parseOrder(order), where: JSON.parse(where), offset,
       });
     },
   },

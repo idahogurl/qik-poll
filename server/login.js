@@ -1,9 +1,9 @@
 import uuid from 'uuid/v4';
-import { user as User } from './models';
+import { User } from './models';
 
 export default async function processLogin(req, res, next) {
   try {
-    const { firstName, name, email } = req.body;
+    const { displayName, name, email } = req.body;
 
     const token = Math.random().toString(36).substr(2, 100);
     let user = await User.findOne({ where: { email } });
@@ -11,7 +11,7 @@ export default async function processLogin(req, res, next) {
     if (!user) {
       user = await User.create({
         id: uuid(),
-        displayName: firstName,
+        displayName,
         name,
         email,
       });

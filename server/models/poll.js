@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Poll = sequelize.define('poll', {
+  const Poll = sequelize.define('Poll', {
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
@@ -18,6 +18,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    published: {
+      type: DataTypes.BOOLEAN,
+      default: 0,
+    },
   }, {
     underscored: true,
     paranoid: true,
@@ -29,11 +33,17 @@ module.exports = (sequelize, DataTypes) => {
       name: 'poll_user_id_index',
       method: 'BTREE',
       fields: ['user_id'],
-    }],
+    },
+    {
+      name: 'poll_published_index',
+      method: 'BTREE',
+      fields: ['published'],
+    },
+    ],
   });
-  Poll.associate = ({ user, pollOption }) => {
-    Poll.belongsTo(user);
-    Poll.hasMany(pollOption);
+  Poll.associate = ({ User, PollOption }) => {
+    Poll.belongsTo(User);
+    Poll.hasMany(PollOption);
   };
   return Poll;
 };
