@@ -6,6 +6,7 @@ import { processResponse, handleError } from '../utils/facebookResponse';
 class LoginButton extends PureComponent {
   constructor(props) {
     super(props);
+    const window = global;
     const currentUser = JSON.parse(window.sessionStorage.getItem('currentUser'));
     this.state = { displayName: currentUser ? currentUser.first_name : null };
     this.handleResponse = this.handleResponse.bind(this);

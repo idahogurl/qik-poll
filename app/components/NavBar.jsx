@@ -24,6 +24,7 @@ class NavBar extends PureComponent {
   async onLogout() {
     try {
       await get('/logout');
+      const window = global;
       window.sessionStorage.clear();
       this.setState({ displayName: null });
     } catch (err) {
