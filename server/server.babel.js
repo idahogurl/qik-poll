@@ -30,7 +30,6 @@ app.get('/graphiql', getUser, graphiqlExpress({
 
 app.post('/auth/facebook', (req, res, next) => {
   processLogin(req, res, next);
-  res.sendStatus(500);
 });
 
 app.use('/logout', (req, res) => {

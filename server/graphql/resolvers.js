@@ -5,7 +5,6 @@ import { User, Poll, PollOption, UserSelection } from '../models';
 const parseOrder = function parseOrder(order) {
   const columns = order.split(', ');
   const columnOrder = columns.map(c => c.split(' '));
-  console.log(columnOrder);
   return columnOrder;
 };
 

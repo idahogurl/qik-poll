@@ -1,4 +1,4 @@
-query polls($limit: Int, $order: String, $where: JSON, $offset: Int){
+query getPolls($limit: Int, $order: String, $where: JSON, $offset: Int){
 	polls(limit: $limit, order: $order, where: $where, offset: $offset) {
   	id
     userId

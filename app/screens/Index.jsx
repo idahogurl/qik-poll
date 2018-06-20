@@ -1,6 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Switch, Route, Link } from 'react-router-dom';
 import NavBar from '../components/NavBar';
+import PollList from '../components/PollList';
 
 export default function IndexScreen() {
   return (
@@ -25,6 +26,13 @@ export default function IndexScreen() {
           </div>
         </div>
       </div>
+      <Switch>
+        <Route exact match="/" component={PollList} />
+        <Route match="/viewPolls" component={PollList} />
+        <Route match="/myPolls" component={PollList} />
+        <Route match="/newPoll" component={PollList} />
+      </Switch>
+
     </div>
   );
 }

@@ -1,10 +1,5 @@
 import { User } from './models';
 
-const sendUnauthorized = function sendUnauthorized(req, res) {
-  res.clearCookie('token');
-  res.sendStatus(401);
-};
-
 /**
  * Authentication Middleware
  *
@@ -18,12 +13,8 @@ const getUser = async (req, res, next) => {
     const user = await User.findById(id);
 
     req.user = user;
-
-    next();
-  } else {
-    // user is not logged in
-    sendUnauthorized(req, res);
   }
+  next();
 };
 
 export default (req, res, next) => {

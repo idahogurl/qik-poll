@@ -20,6 +20,7 @@ export default async function processLogin(req, res, next) {
     res.cookie('token', `${user.id}|${token}`, { signed: true, httpOnly: true });
     console.log('redirect');
     res.redirect(302, '/');
+    next();
   } catch (err) {
     next(err);
   }

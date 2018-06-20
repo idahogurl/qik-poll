@@ -22,6 +22,10 @@ const config = {
         test: /\.css$/,
         use: ['style-loader', 'css-loader'],
       },
+      {
+        test: /\.gql/,
+        use: 'graphql-tag/loader',
+      },
     ],
   },
   resolve: {

@@ -1,20 +1,39 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import { Query } from 'react-apollo';
+import { getPolls } from '../graphql/polls.gql';
 import PollListItem from './PollListItem';
+import Instructions from './Instructions';
 
 const PollList = function PollList() {
-  return <Query>
-  </Query>
-    const listItems =
-    this.props.polls.map(li => <PollListItem id={li.id} title={li.title} key={li.id} />);
-    return <ul className="list-group">{listItems}</ul>;
-  }
-}
+  const variables = {
+    order: 'created_at ASC',
+    where: '{"published": 0}',
+  };
 
-PollList.propTypes = {
-  polls: PropTypes.arrayOf(PropTypes.object).isRequired,
+  return (
+    <Query query={getPolls} variables={variables}>
+      {({ loading, error, data }) => {
+    if (loading) return <div>Loading...</div>;
+
+    if (error) {
+      return <div>An unexpected error occurred.</div>;
+    }
+
+    if (!data.polls) return <Instructions>Login to make a new poll.</Instructions>;
+
+    const listItems = data.polls.map(li =>
+      <PollListItem id={li.id} title={li.title} key={li.id} />);
+
+    return (
+      <div className="container">
+        <Instructions>Select a poll to see the results and vote,
+          or login to make a new poll.
+        </Instructions>
+        <ul className="list-group">{listItems}</ul>
+      </div>
+      );
+  }}
+    </Query>);
 };
-
 
 export default PollList;
