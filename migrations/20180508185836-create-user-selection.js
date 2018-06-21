@@ -8,15 +8,6 @@ module.exports = {
           primaryKey: true,
           allowNull: false,
         },
-        userId: {
-          type: Sequelize.DataTypes.UUID,
-          allowNull: false,
-          field: 'user_id',
-          references: {
-            model: 'users',
-            key: 'id',
-          },
-        },
         pollOptionId: {
           type: Sequelize.DataTypes.UUID,
           field: 'poll_option_id',
@@ -30,11 +21,6 @@ module.exports = {
         name: 'user_selection_poll_option_id_index',
         method: 'BTREE',
         fields: ['poll_option_id'],
-      });
-      await queryInterface.addIndex('user_selections', {
-        name: 'user_selection_user_id_index',
-        method: 'BTREE',
-        fields: ['user_id'],
       });
       await transaction.commit();
     } catch (err) {

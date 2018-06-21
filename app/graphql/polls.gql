@@ -6,10 +6,25 @@ query getPolls($limit: Int, $order: String, $where: JSON, $offset: Int){
   }
 }
 
-mutation createPoll($userId: UUID!, $prompt: String!) {
+mutation createPoll($userId: String!, $prompt: String!) {
   createPoll(userId: $userId, prompt: $prompt) {
-    id,
-    userId,
+    id
+    userId
     published
+  }
+}
+
+query getPoll($id: UUID!) {
+  poll(id: $id) {
+		id
+    prompt
+    published
+    pollOptions {
+      id
+			option
+      userSelections {
+        id
+      }
+    }
   }
 }

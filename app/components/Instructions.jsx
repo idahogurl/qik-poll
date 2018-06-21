@@ -5,7 +5,7 @@ import { FelaComponent } from 'react-fela';
 const style = {
   textAlign: 'center',
   marginTop: '1em',
-  color: 'gainsboro',
+  color: 'gray',
 };
 
 const Instructions = function Instructions(props) {

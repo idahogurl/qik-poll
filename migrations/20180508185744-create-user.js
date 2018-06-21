@@ -4,12 +4,11 @@ module.exports = {
     try {
       await queryInterface.createTable('users', {
         id: {
-          type: Sequelize.DataTypes.UUID,
+          type: Sequelize.DataTypes.STRING,
           primaryKey: true,
           allowNull: false,
-          unique: true,
         },
-        first_name: {
+        display_name: {
           type: Sequelize.DataTypes.STRING,
           allowNull: false,
         },
@@ -22,7 +21,6 @@ module.exports = {
           validate: {
             isEmail: true,
           },
-          unique: true,
           allowNull: false,
         },
         created_at: {
@@ -41,12 +39,6 @@ module.exports = {
         name: 'user_deleted_at_index',
         method: 'BTREE',
         fields: ['deleted_at'],
-        transaction,
-      });
-      await queryInterface.addIndex('users', {
-        name: 'user_email_index',
-        method: 'BTREE',
-        fields: ['email'],
         transaction,
       });
       await transaction.commit();

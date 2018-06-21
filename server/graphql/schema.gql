@@ -14,13 +14,13 @@ type GenericResponse {
 
 type Mutation {
   createUser(input: UserInput!): User
-  updateUser(id: UUID!, input: UserInput!): User
-  deleteUser(id: UUID!): GenericResponse
-  createUserSelection(userId: UUID!, pollOptionId: UUID): UserSelection
-  updateUserSelection(id: UUID!, userId: UUID, pollOptionId: UUID): UserSelection
+  updateUser(id: String!, input: UserInput!): User
+  deleteUser(id: String!): GenericResponse
+  createUserSelection(pollOptionId: UUID): UserSelection
+  updateUserSelection(id: UUID!, pollOptionId: UUID): UserSelection
   deleteUserSelection(id: UUID!): GenericResponse
-  createPoll(userId: UUID!, prompt: String!): Poll
-  updatePoll(id: UUID!, userId: UUID, prompt: String!): Poll
+  createPoll(userId: String!, prompt: String!): Poll
+  updatePoll(id: UUID!, userId: String, prompt: String!): Poll
   deletePoll(id: UUID!): GenericResponse
   createPollOption(pollId: UUID!, option: String!): PollOption
   updatePollOption(id: UUID!,  option: String!): PollOption
@@ -63,6 +63,7 @@ type Poll {
 type PollOption {
   id: UUID!
   pollId: UUID!
+  option: String!,
   createdAt: Date!
   updatedAt: Date!
   deletedAt: Date!
@@ -119,7 +120,7 @@ type Query {
 }
 
 type User {
-  id: UUID!
+  id: String!
   name: String!
   email: String!
   password: String!
@@ -136,12 +137,6 @@ type User {
   createdAt: Date!
   updatedAt: Date!
   deletedAt: Date!
-  userSelections(
-    limit: Int
-    order: String
-    where: JSON
-    offset: Int
-  ): [UserSelection]
   polls(
     limit: Int
     order: String
@@ -152,9 +147,7 @@ type User {
 
 type UserSelection {
   id: UUID!
-  userId: UUID!
   pollOptionId: UUID
   poll: Poll
   pollOption: PollOption
-  user: User
 }

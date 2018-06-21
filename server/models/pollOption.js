@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       pollId: {
+        field: 'poll_id',
         type: DataTypes.UUID,
         references: {
           model: 'polls',

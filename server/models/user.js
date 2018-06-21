@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt-nodejs';
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     id: {
-      type: DataTypes.UUID,
+      type: DataTypes.STRING,
       primaryKey: true,
       allowNull: false,
     },
@@ -22,7 +22,6 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         isEmail: true,
       },
-      unique: true,
       allowNull: false,
     },
     gravatar: {
@@ -42,23 +41,12 @@ module.exports = (sequelize, DataTypes) => {
       name: 'user_deleted_at_index',
       method: 'BTREE',
       fields: ['deleted_at'],
-    },
-    {
-      name: 'user_email_index',
-      method: 'BTREE',
-      fields: ['email'],
     }],
   });
 
   User.associate = ({ Poll, UserSelection }) => {
     User.hasMany(Poll);
     User.hasMany(UserSelection);
-  };
-
-  User.comparePassword = (password, done) => {
-    bcrypt.compare(password, this.getDataValue('password'), (err, isMatch) => {
-      done(err, isMatch);
-    });
   };
 
   return User;

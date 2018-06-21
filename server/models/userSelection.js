@@ -5,19 +5,9 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       allowNull: false,
     },
-    userId: {
-      type: DataTypes.UUID,
-      primaryKey: true,
-      allowNull: false,
-      field: 'user_id',
-      references: {
-        model: 'users',
-        key: 'id',
-      },
-    },
     pollOptionId: {
-      type: DataTypes.UUID,
       field: 'poll_option_id',
+      type: DataTypes.UUID,
       references: {
         model: 'poll_options',
         key: 'id',

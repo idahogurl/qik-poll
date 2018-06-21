@@ -23,7 +23,7 @@ const config = {
         use: ['style-loader', 'css-loader'],
       },
       {
-        test: /\.gql/,
+        test: /\.gql$/,
         use: 'graphql-tag/loader',
       },
     ],
