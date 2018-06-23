@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import { getPolls } from '../graphql/polls.gql';
@@ -15,13 +15,11 @@ const PollList = function PollList(props) {
   if (path.includes('myPolls')) {
     const { window } = global;
     const currentUser = JSON.parse(window.sessionStorage.getItem('currentUser'));
+    if (!currentUser) return <Instructions>Login to view your polls.</Instructions>;
+
     if (currentUser) {
       where.user_id = currentUser.id;
     }
-  }
-
-  if (path.includes('viewPolls')) {
-    where.published = 1;
   }
 
   const variables = {
@@ -30,10 +28,11 @@ const PollList = function PollList(props) {
   };
 
   return (
-    <Query query={getPolls} variables={variables}>
-      {({ loading, error, data }) => {
-        debugger;
+    <div className="p-3">
+      <Query query={getPolls} variables={variables}>
+        {({ loading, error, data }) => {
         if (loading) return <Loader />;
+
         if (error) {
           onError(error);
         }
@@ -44,15 +43,16 @@ const PollList = function PollList(props) {
           <PollListItem id={li.id} title={li.prompt} key={li.id} />);
 
         return (
-          <div className="container-fluid">
+          <Fragment>
             <Instructions>Select a poll to see the results and vote,
               or login to make a new poll.
             </Instructions>
             <ul className="list-group">{listItems}</ul>
-          </div>
-          );
+          </Fragment>);
       }}
-    </Query>);
+      </Query>
+    </div>
+  );
 };
 
 PollList.propTypes = {

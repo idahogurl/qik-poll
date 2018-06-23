@@ -1,11 +1,17 @@
 import React from 'react';
-import { Mutation, Query } from 'react-apollo';
+import PropTypes from 'prop-types';
+import { Mutation } from 'react-apollo';
 import { Formik } from 'formik';
+import classNames from 'classnames';
 import { createPoll, getPolls } from '../graphql/polls.gql';
+import Instructions from './Instructions';
+import onError from '../utils/onError';
 
 const PollEditor = function PollEditor(props) {
   const { window } = global;
   const currentUser = JSON.parse(window.sessionStorage.getItem('currentUser'));
+
+  if (!currentUser) return <Instructions>Login to create a poll.</Instructions>;
 
   return (
     <Mutation
@@ -20,83 +26,82 @@ const PollEditor = function PollEditor(props) {
     >
       {createMutation => (<Formik
         initialValues={{
-          prompt: '',
-          options: '',
+          prompt: props.prompt,
+          options: props.options,
         }}
+
         validate={(values) => {
-          // same as above, but feel free to move this into a class method now.
           const errors = {};
-          // if (!values.email) {
-          //   errors.email = 'Required';
-          // } else if (
-          //   !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
-          // ) {
-          //   errors.email = 'Invalid email address';
-          // }
+          if (values.prompt.trim() === '') errors.prompt = 'Please enter a question';
+          if (values.prompt.length > 255) errors.prompt = 'Must be less than 255 characters';
+          if (values.options.trim() === '') errors.options = 'Please enter options';
           return errors;
         }}
-        onSubmit={(
-          values,
-          { setSubmitting, setErrors /* setValues and other goodies */ },
-        ) => {
-          createMutation({ variables: { ...values, userId: currentUser.id } });
-          // LoginToMyApp(values).then(
-          //   (user) => {
-          //     setSubmitting(false);
-          //     // do whatevs...
-          //     // props.updateUser(user)
-          //   },
-          //   (errors) => {
-          //     setSubmitting(false);
-          //     // Maybe transform your API's errors into the same shape as Formik's
-          //     setErrors(transformMyApiErrors(errors));
-          //   },
-          // );
+
+        onSubmit={async (values, { setSubmitting }) => {
+          try {
+            await createMutation({ variables: { input: { ...values, userId: currentUser.id } } });
+            setSubmitting(false);
+          } catch (err) {
+            setSubmitting(false);
+            onError(err);
+          }
         }}
+
         render={({
           values,
           errors,
-          touched,
           handleChange,
           handleBlur,
           handleSubmit,
           isSubmitting,
         }) => (
-          <div className="container-fluid">
-            <form onSubmit={handleSubmit} className="form">
-              <div className="form-group">
-                <label>Question<input
-                  type="text"
-                  name="prompt"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.prompt}
-                  className="form-control w-100"
-                />
-                </label>
-              </div>
-              {touched.prompt && errors.prompt && <div>{errors.prompt}</div>}
-              <div className="form-group">
-                <label>
-              Options (seperated by line):
-                  <textarea
-                    name="options"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.options}
-                    className="form-control"
-                  />
-                </label>
-              </div>
-              {touched.options && errors.options && <div>{errors.options}</div>}
-              <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-              Create
-              </button>
-            </form>
-          </div>
+
+          <form onSubmit={handleSubmit} className="px-4 py-3">
+            <h1>{props.prompt ? 'Edit' : 'New'} Poll</h1>
+            <div className="form-group">
+              <label className="control-label" htmlFor="prompt">Question</label>
+              <input
+                type="text"
+                id="prompt"
+                name="prompt"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.prompt}
+                className={classNames('form-control', { 'is-invalid': errors.prompt })}
+              />
+              {errors.prompt ? <small className="text-danger">{errors.prompt}</small> :
+              <small className="text-muted">Must not be greater than 255 characters</small>}
+            </div>
+            <div className="form-group">
+              <label className="control-label" htmlFor="options">Options (seperated by line):</label>
+              <textarea
+                id="options"
+                name="options"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.options}
+                className={classNames('form-control', { 'is-invalid': errors.options })}
+              />
+              {errors.options && <small className="text-danger">{errors.options}</small>}
+            </div>
+            <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+              {isSubmitting ? <span><i className="fa fa-circle-o-notch fa-spin" />Saving</span> : 'Create'}
+            </button>
+          </form>
         )}
       />)}
     </Mutation>);
+};
+
+PollEditor.propTypes = {
+  prompt: PropTypes.string,
+  options: PropTypes.string,
+};
+
+PollEditor.defaultProps = {
+  prompt: '',
+  options: '',
 };
 
 export default PollEditor;

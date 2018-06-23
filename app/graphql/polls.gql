@@ -6,8 +6,8 @@ query getPolls($limit: Int, $order: String, $where: JSON, $offset: Int){
   }
 }
 
-mutation createPoll($userId: String!, $prompt: String!) {
-  createPoll(userId: $userId, prompt: $prompt) {
+mutation createPoll($input: PollInput!) {
+  createPoll(input: $input) {
     id
     userId
     published

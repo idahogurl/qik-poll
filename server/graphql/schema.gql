@@ -19,12 +19,18 @@ type Mutation {
   createUserSelection(pollOptionId: UUID): UserSelection
   updateUserSelection(id: UUID!, pollOptionId: UUID): UserSelection
   deleteUserSelection(id: UUID!): GenericResponse
-  createPoll(userId: String!, prompt: String!): Poll
+  createPoll(input: PollInput!): Poll
   updatePoll(id: UUID!, userId: String, prompt: String!): Poll
   deletePoll(id: UUID!): GenericResponse
   createPollOption(pollId: UUID!, option: String!): PollOption
   updatePollOption(id: UUID!,  option: String!): PollOption
   deletePollOption(id: UUID!): GenericResponse
+}
+
+input PollInput {
+  userId: String!
+  prompt: String!
+  options: String!
 }
 
 input UserInput {

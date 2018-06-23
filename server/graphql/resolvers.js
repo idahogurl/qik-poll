@@ -46,9 +46,16 @@ export default {
       await UserSelection.destroy({ where: { id } });
       //  GenericResponse
     },
-    createPoll: async (_, { userId, prompt }) => {
+    createPoll: async (_, { input: { userId, prompt, options } }) => {
+      console.log('here', userId);
       const id = uuid();
-      await Poll.create({ id, userId, prompt });
+      const poll = await Poll.create({ id, userId, prompt });
+
+      // split newline
+      const pollOptions = options.split('\n').map(m => ({ option: m, pollId: poll.id }));
+      await PollOption.bulkCreate(pollOptions);
+
+      return poll;
     },
     updatePoll: async (_, { id, prompt }) => {
       const poll = await Poll.findById(id);

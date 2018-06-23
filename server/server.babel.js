@@ -32,11 +32,11 @@ app.post('/auth/facebook', (req, res, next) => {
   processLogin(req, res, next);
 });
 
-app.use('/logout', (req, res) => {
+app.use('/logout', (req, res, next) => {
   if (req.signedCookies.token) {
     res.clearCookie('token');
   }
-  res.sendStatus(200);
+  next();
 });
 
 // Always return the main index.html, so react-router renders the route in the client

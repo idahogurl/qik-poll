@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     published: {
       type: DataTypes.BOOLEAN,
-      default: 0,
+      default: 1,
     },
   }, {
     underscored: true,

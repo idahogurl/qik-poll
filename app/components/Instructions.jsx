@@ -10,7 +10,7 @@ const style = {
 
 const Instructions = function Instructions(props) {
   return (
-    <FelaComponent customClass="h2" style={style}>
+    <FelaComponent customClass="h3" style={style} render="h2">
       {props.children}
     </FelaComponent>
   );

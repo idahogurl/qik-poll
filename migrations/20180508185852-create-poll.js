@@ -22,7 +22,7 @@ module.exports = {
         },
         published: {
           type: Sequelize.DataTypes.BOOLEAN,
-          default: 0,
+          default: 1,
         },
         created_at: {
           type: Sequelize.DataTypes.DATE,

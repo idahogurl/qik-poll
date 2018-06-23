@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import { getPoll } from '../graphql/polls.gql';
+import Loader from './Loader';
+import onError from '../utils/onError';
 import PollOption from './PollOption';
 import PollChart from './PollChart';
 
@@ -15,11 +17,10 @@ const PollViewer = function PollViewer(props) {
   return (
     <Query query={getPoll} variables={variables}>
       {({ loading, error, data }) => {
-
-      if (loading) return <div>Loading...</div>;
+      if (loading) return <Loader />;
 
       if (error) {
-        return <div>An unexpected error occurred.</div>;
+          onError(error);
       }
 
       const { poll } = data;
@@ -40,15 +41,15 @@ const PollViewer = function PollViewer(props) {
       options.push(newOption);
 
       return (
-        <div>
+        <div className="m-3">
           <div id="fb-root" />
           <div className="row">
             <div className="col-sm-6">
-              <h2>{poll.prompt}</h2>
+              <h1 className="h2">{poll.prompt}</h1>
 
               <input type="hidden" name="id" value={id} />
               <ul className="list-group">{options}</ul>
-              <button className="btn btn-primary" style={{ margin: 10 }}>Vote</button>
+              <button className="btn btn-primary mt-3">Vote</button>
               <div />
             </div>
             <div className="col-sm-6">
@@ -63,8 +64,11 @@ const PollViewer = function PollViewer(props) {
 };
 
 PollViewer.propTypes = {
-  id: PropTypes.number,
-  options: PropTypes.array,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
 };
 
 export default PollViewer;
