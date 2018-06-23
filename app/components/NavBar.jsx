@@ -19,10 +19,9 @@ class NavBar extends PureComponent {
   }
 
   onLogin(data) {
-    this.setState({ displayName: data.first_name });
     const window = global;
     window.sessionStorage.setItem('currentUser', JSON.stringify(data));
-
+    this.setState({ displayName: data.first_name });
     this.refreshPage();
   }
 
@@ -33,8 +32,7 @@ class NavBar extends PureComponent {
       const window = global;
       window.sessionStorage.clear();
 
-      this.setState({ displayName: null });
-      this.refreshPage();
+      this.setState({ displayName: null }, this.refreshPage());
     } catch (err) {
       onError('An unknown error occurred. Contact support if this issue continues.', err);
     }
@@ -50,7 +48,6 @@ class NavBar extends PureComponent {
   }
 
   render() {
-    console.log(this.props);
     const { displayName } = this.state;
 
     return (

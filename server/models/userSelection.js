@@ -22,16 +22,10 @@ module.exports = (sequelize, DataTypes) => {
       method: 'BTREE',
       fields: ['poll_option_id'],
     },
-    {
-      name: 'user_selection_user_id_index',
-      method: 'BTREE',
-      fields: ['user_id'],
-    },
     ],
   });
 
-  UserSelection.associate = ({ User, PollOption }) => {
-    UserSelection.belongsTo(User);
+  UserSelection.associate = ({ PollOption }) => {
     UserSelection.belongsTo(PollOption);
   };
 

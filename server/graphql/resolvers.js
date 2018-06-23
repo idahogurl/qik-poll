@@ -35,8 +35,8 @@ export default {
       await User.destroy({ where: { id } });
       // GenericResponse
     },
-    createUserSelection: async (_, { userId, pollOptionId }) => {
-      await UserSelection.create({ userId, pollOptionId });
+    createUserSelection: async (_, { pollOptionId }) => {
+      await UserSelection.create({ pollOptionId });
     },
     updateUserSelection: async (_, { id, pollOptionId }) => {
       const userSelection = await UserSelection.findById(id);
@@ -47,7 +47,6 @@ export default {
       //  GenericResponse
     },
     createPoll: async (_, { input: { userId, prompt, options } }) => {
-      console.log('here', userId);
       const id = uuid();
       const poll = await Poll.create({ id, userId, prompt });
 
@@ -83,9 +82,10 @@ export default {
     pollOptions: async (poll, {
       limit, order, where, offset,
     }) => {
-      await poll.getPollOptions({
+      const pollOptions = await poll.getPollOptions({
         limit, order: parseOrder(order), where: parseWhere(where), offset,
       });
+      return pollOptions;
     },
   },
   PollOption: {

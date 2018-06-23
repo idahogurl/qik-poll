@@ -43,9 +43,8 @@ module.exports = (sequelize, DataTypes) => {
     }],
   });
 
-  User.associate = ({ Poll, UserSelection }) => {
+  User.associate = ({ Poll }) => {
     User.hasMany(Poll);
-    User.hasMany(UserSelection);
   };
 
   return User;

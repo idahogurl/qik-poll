@@ -24,7 +24,7 @@ const PollViewer = function PollViewer(props) {
       }
 
       const { poll } = data;
-
+      console.log(poll);
       const options = poll.pollOptions ? poll.pollOptions.map(li =>
         <PollOption id={li.id} title={li.option} key={li.id} />) :
           [];

@@ -36,8 +36,10 @@ module.exports = (sequelize, DataTypes) => {
       }],
     },
   );
-  PollOption.associate = ({ Poll }) =>
+  PollOption.associate = ({ Poll, UserSelection }) => {
     PollOption.belongsTo(Poll);
+    PollOption.hasMany(UserSelection);
+  };
 
   return PollOption;
 };
