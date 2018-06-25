@@ -37,7 +37,7 @@ const PollViewer = function PollViewer(props) {
       {mutate => (
         <Query query={GET_POLL} variables={variables}>
           {({ loading, error, data }) => {
-              if (loading) return <Loading element="page" />;
+              if (loading) return <Loading container"page" />;
 
               if (error) {
                 onError(error);
@@ -76,7 +76,7 @@ const PollViewer = function PollViewer(props) {
                           {currentUser && currentUser.id === poll.userId &&
                           <form onSubmit={handleSubmit}>
                             <button type="submit" className="btn btn-danger mt-3" disabled={isSubmitting}>
-                              {isSubmitting ? <span><Loading element="button" />Deleting</span> : 'Delete'}
+                              {isSubmitting ? <span><Loading container"button" />Deleting</span> : 'Delete'}
                             </button>
                           </form>}
                           <PollChart options={poll.pollOptions} />

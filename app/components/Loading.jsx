@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { FelaComponent } from 'react-fela';
 
 const Loading = function Loading(props) {
-  const { element } = props;
+  const { container } = props;
 
-  const style = element === 'page' ? {
+  const style = container === 'page' ? {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -16,14 +16,14 @@ const Loading = function Loading(props) {
   } : {};
 
   return (
-    <FelaComponent style={style} render={element === 'page' ? 'div' : 'span'}>
-      <i className={`fa ${element === 'page' ? 'fa-4x' : null} fa-spinner fa-spin`} />
+    <FelaComponent style={style} render={container === 'page' ? 'div' : 'span'}>
+      <i className={`fa ${container === 'page' ? 'fa-4x' : null} fa-spinner fa-spin`} />
     </FelaComponent>
   );
 };
 
 Loading.propTypes = {
-  element: PropTypes.string.isRequired,
+  container: PropTypes.string.isRequired,
 };
 
 export default Loading;

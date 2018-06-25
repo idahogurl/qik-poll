@@ -93,7 +93,7 @@ const PollEditor = function PollEditor(props) {
               {errors.options && <small className="text-danger">{errors.options}</small>}
             </div>
             <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-              {isSubmitting ? <span><Loading element="button" />Saving</span> : 'Create'}
+              {isSubmitting ? <span><Loading container"button" />Saving</span> : 'Create'}
             </button>
           </form>
         )}
