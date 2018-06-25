@@ -47,7 +47,6 @@
     "react-fela": "^7.3.0",
     "react-router-dom": "^4.2.2",
     "react-router-prop-types": "^1.0.4",
-    "react-spinkit": "^3.0.0",
     "react-vis": "^1.9.4",
     "sequelize": "^4.37.7",
     "sqlite3": "^4.0.0",

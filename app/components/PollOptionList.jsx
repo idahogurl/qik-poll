@@ -7,12 +7,13 @@ import uuid from 'uuid/v4';
 import GET_POLL from '../graphql/Poll.gql';
 import VOTE_MUTATION from '../graphql/Vote.gql';
 
+import Loading from './Loading';
 import PollOption from './PollOption';
 
 import onError from '../utils/onError';
 
 const PollOptionList = function PollOptionList(props) {
-  const { pollId, pollOptions } = props;
+  const { pollId, pollOptions, isDeleting } = props;
   return (
     <Mutation
       mutation={VOTE_MUTATION}
@@ -38,6 +39,9 @@ const PollOptionList = function PollOptionList(props) {
             newOption: '',
             newOptionId: uuid(),
           }}
+
+          validateOnBlur={false}
+          validateOnChange={false}
 
           validate={(values) => {
             const errors = {};
@@ -70,9 +74,6 @@ const PollOptionList = function PollOptionList(props) {
             });
           }}
 
-          validateOnBlur={false}
-          validateOnChange={false}
-
           render={({
             values,
             errors,
@@ -82,7 +83,13 @@ const PollOptionList = function PollOptionList(props) {
             isSubmitting,
           }) => {
             const options = pollOptions.map(li =>
-              <PollOption id={li.id} title={li.option} key={li.id} onChange={handleChange} checked={li.id === values.pollOptions} />);
+              (<PollOption
+                id={li.id}
+                title={li.option}
+                key={li.id}
+                onChange={handleChange}
+                checked={li.id === values.pollOptions}
+              />));
 
             return (
               <form onSubmit={handleSubmit} className="px-4 py-3">
@@ -109,11 +116,12 @@ const PollOptionList = function PollOptionList(props) {
                         setFieldValue('pollOptions', values.newOptionId, false);
                       }}
                     />
+                    &nbsp;<small className="text-muted">Must not be greater than 50 characters</small>
                   </li>
                 </ul>
                 {errors.pollOptions && <div><small className="text-danger">{errors.pollOptions}</small></div>}
-                <button type="submit" className="btn btn-primary mt-3" disabled={isSubmitting}>
-                  {isSubmitting ? <span><i className="fa fa-circle-o-notch fa-spin" />Vote</span> : 'Vote'}
+                <button type="submit" className="btn btn-primary mt-3" disabled={isDeleting || isSubmitting}>
+                  {isSubmitting ? <span><Loading element="button" />Vote</span> : 'Vote'}
                 </button>
               </form>
             );
@@ -129,6 +137,7 @@ PollOptionList.propTypes = {
     id: PropTypes.string.isRequired,
     option: PropTypes.string.isRequired,
   })).isRequired,
+  isDeleting: PropTypes.bool.isRequired,
 };
 
 export default PollOptionList;

@@ -30,11 +30,14 @@ class LoginButton extends PureComponent {
         autoLoad
         fields="id,first_name,name,email"
         callback={this.handleResponse}
-        render={renderProps => (
-          <button className={`btn btn-sm fb-login-button${!displayName ? ' d-block' : ' d-none'}`} onClick={renderProps.onClick}>
+        render={({ isProcessing, onClick }) => (
+          <button
+            className={`btn btn-sm fb-login-button${!displayName ? ' d-block' : ' d-none'}`}
+            onClick={onClick}
+          >
             <i className="fa fa-2x fa-facebook-official align-middle" />
             <span className="align-middle">
-              {renderProps.isProcessing ? 'Loading ...' : 'Login with Facebook'}
+              {isProcessing ? 'Loading ...' : 'Login with Facebook'}
             </span>
           </button>
       )}

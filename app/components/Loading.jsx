@@ -1,20 +1,29 @@
 import React from 'react';
-import Spinner from 'react-spinkit';
+import PropTypes from 'prop-types';
 import { FelaComponent } from 'react-fela';
 
-const style = {
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  flex: '1 0 auto',
-};
+const Loading = function Loading(props) {
+  const { element } = props;
 
-const Loading = function Loading() {
+  const style = element === 'page' ? {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: '1 0 auto',
+    marginTop: '1em',
+    height: '50%',
+  } : {};
+
   return (
-    <FelaComponent style={style}>
-      <Spinner name="line-scale-party" />
+    <FelaComponent style={style} render={element === 'page' ? 'div' : 'span'}>
+      <i className={`fa ${element === 'page' ? 'fa-4x' : null} fa-spinner fa-spin`} />
     </FelaComponent>
   );
 };
+
+Loading.propTypes = {
+  element: PropTypes.string.isRequired,
+};
+
 export default Loading;

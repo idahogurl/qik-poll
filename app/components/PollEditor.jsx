@@ -8,6 +8,8 @@ import CREATE_POLL from '../graphql/PollEditor.gql';
 import GET_POLLS from '../graphql/PollList.gql';
 
 import Instructions from './Instructions';
+import Loading from './Loading';
+
 import onError from '../utils/onError';
 
 const PollEditor = function PollEditor(props) {
@@ -33,6 +35,9 @@ const PollEditor = function PollEditor(props) {
           question: '',
           options: '',
         }}
+
+        validateOnBlur={false}
+        validateOnChange={false}
 
         validate={(values) => {
           const errors = {};
@@ -88,7 +93,7 @@ const PollEditor = function PollEditor(props) {
               {errors.options && <small className="text-danger">{errors.options}</small>}
             </div>
             <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-              {isSubmitting ? <span><i className="fa fa-circle-o-notch fa-spin" />Saving</span> : 'Create'}
+              {isSubmitting ? <span><Loading element="button" />Saving</span> : 'Create'}
             </button>
           </form>
         )}
