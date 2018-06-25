@@ -20,6 +20,11 @@ module.exports = {
           type: Sequelize.DataTypes.STRING,
           allowNull: false,
         },
+        votes: {
+          type: Sequelize.DataTypes.INTEGER,
+          allowNull: false,
+          defaultValue: 0,
+        },
         created_at: {
           allowNull: false,
           type: Sequelize.DataTypes.DATE,

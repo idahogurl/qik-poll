@@ -1,6 +1,6 @@
 import GraphQLToolTypes from 'graphql-tools-types';
 import uuid from 'uuid/v4';
-import { User, Poll, PollOption, UserSelection } from '../models';
+import { User, Poll, PollOption } from '../models';
 
 const parseOrder = function parseOrder(order) {
   if (order) {
@@ -35,20 +35,9 @@ export default {
       await User.destroy({ where: { id } });
       // GenericResponse
     },
-    createUserSelection: async (_, { pollOptionId }) => {
-      await UserSelection.create({ pollOptionId });
-    },
-    updateUserSelection: async (_, { id, pollOptionId }) => {
-      const userSelection = await UserSelection.findById(id);
-      await userSelection.update({ pollOptionId });
-    },
-    deleteUserSelection: async (_, { id }) => {
-      await UserSelection.destroy({ where: { id } });
-      //  GenericResponse
-    },
-    createPoll: async (_, { input: { userId, prompt, options } }) => {
+    createPoll: async (_, { input: { userId, question, options } }) => {
       const id = uuid();
-      const poll = await Poll.create({ id, userId, prompt });
+      const poll = await Poll.create({ id, userId, question });
 
       // split newline
       const pollOptions = options.split('\n').map(m => ({ option: m, pollId: poll.id }));
@@ -56,26 +45,42 @@ export default {
 
       return poll;
     },
-    updatePoll: async (_, { id, prompt }) => {
+    updatePoll: async (_, { id, question }) => {
       const poll = await Poll.findById(id);
-      poll.prompt = prompt;
+      poll.question = question;
       await poll.save();
     },
     deletePoll: async (_, { id }) => {
       //  GenericResponse
       await Poll.destroy({ where: { id } });
+      return true;
     },
     createPollOption: async (_, { pollId, option }) => {
       const poll = await PollOption.create({ pollId, option });
       return poll;
     },
     updatePollOption: async (_, { id, option }) => {
-      const pollOption = PollOption.findById(id);
-      await pollOption.update({ option });
+      const pollOption = await PollOption.findById(id);
+      pollOption.update({ option });
+      return pollOption;
     },
     deletePollOption: async (_, { id }) => {
       //  GenericResponse
       await PollOption.destroy({ where: { id } });
+    },
+    vote: async (_, { id, input }) => {
+      const pollOption = await PollOption.findById(id);
+
+      if (!pollOption) {
+        const { pollId, option } = input;
+        const newOption = await PollOption.create({
+          id, pollId, option, votes: 1,
+        });
+        return newOption;
+      }
+      const votes = pollOption.votes + 1;
+      pollOption.update({ votes });
+      return pollOption;
     },
   },
   Poll: {
@@ -89,14 +94,6 @@ export default {
     },
   },
   PollOption: {
-    userSelections: async (pollOption, {
-      limit, order, where, offset,
-    }) => {
-      const selections = await pollOption.getUserSelections({
-        limit, order: parseOrder(order), where: parseWhere(where), offset,
-      });
-      return selections;
-    },
     poll: async (pollOption) => {
       await pollOption.getPoll();
     },
@@ -114,22 +111,9 @@ export default {
     }) => {
       await User.findById(id, { where });
     },
-    userSelections: async (_, {
-      limit, order, where, offset,
-    }) => {
-      await UserSelection.findAll({
-        limit, order: parseOrder(order), where: parseWhere(where), offset,
-      });
-    },
-    userSelection: async (_, {
-      id, where,
-    }) => {
-      await User.findById(id, { where: parseWhere(where) });
-    },
     polls: async (_, {
       limit, order, where, offset,
     }) => {
-      console.log(where);
       const polls = await Poll.findAll({
         limit, order: parseOrder(order), where: parseWhere(where), offset,
       });
@@ -161,14 +145,6 @@ export default {
       await user.getPolls({
         limit, order: parseOrder(order), where: parseWhere(where), offset,
       });
-    },
-  },
-  UserSelection: {
-    pollOption: async (userSelection) => {
-      await userSelection.getPollOption();
-    },
-    poll: async (userSelection) => {
-      await userSelection.getPolls();
     },
   },
 };

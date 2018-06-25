@@ -14,13 +14,9 @@ module.exports = (sequelize, DataTypes) => {
       },
       allowNull: false,
     },
-    prompt: {
+    question: {
       type: DataTypes.STRING,
       allowNull: false,
-    },
-    published: {
-      type: DataTypes.BOOLEAN,
-      default: 1,
     },
   }, {
     underscored: true,
@@ -33,11 +29,6 @@ module.exports = (sequelize, DataTypes) => {
       name: 'poll_user_id_index',
       method: 'BTREE',
       fields: ['user_id'],
-    },
-    {
-      name: 'poll_published_index',
-      method: 'BTREE',
-      fields: ['published'],
     },
     ],
   });

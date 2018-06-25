@@ -6,6 +6,6 @@ export default function onError(message, err) {
   };
 
   const notifier = new AWN(options);
-  notifier.alert(message);
+  notifier.alert('An unexpected error occurred. Contact support if this issue continues.');
   console.error(err);
 }

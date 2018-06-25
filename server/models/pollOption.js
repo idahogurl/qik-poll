@@ -20,6 +20,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      votes: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+        allowNull: false,
+      },
     }, {
       paranoid: true,
       underscored: true,
@@ -36,9 +41,8 @@ module.exports = (sequelize, DataTypes) => {
       }],
     },
   );
-  PollOption.associate = ({ Poll, UserSelection }) => {
+  PollOption.associate = ({ Poll }) => {
     PollOption.belongsTo(Poll);
-    PollOption.hasMany(UserSelection);
   };
 
   return PollOption;

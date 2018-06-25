@@ -1,9 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import ReactRouterPropTypes from 'react-router-prop-types';
 import { Mutation } from 'react-apollo';
 import { Formik } from 'formik';
 import classNames from 'classnames';
-import { createPoll, getPolls } from '../graphql/polls.gql';
+
+import CREATE_POLL from '../graphql/PollEditor.gql';
+import GET_POLLS from '../graphql/PollList.gql';
+
 import Instructions from './Instructions';
 import onError from '../utils/onError';
 
@@ -11,45 +14,46 @@ const PollEditor = function PollEditor(props) {
   const { window } = global;
   const currentUser = JSON.parse(window.sessionStorage.getItem('currentUser'));
 
-  if (!currentUser) return <Instructions>Login to create a poll.</Instructions>;
+  if (!currentUser) return <Instructions>Login to make a poll.</Instructions>;
+
+  const { history } = props;
 
   return (
     <Mutation
-      mutation={createPoll}
-      update={(cache, { data: { createPoll: createdPoll } }) => {
-            const { polls } = cache.readQuery({ query: getPolls });
-            cache.writeQuery({
-              query: getPolls,
-              data: { polls: polls.concat([createdPoll]) },
-            });
+      mutation={CREATE_POLL}
+      update={(cache, { data: { createPoll } }) => {
+            const args = { query: GET_POLLS, variables: { order: 'created_at ASC' } };
+            const { polls } = cache.readQuery(args);
+            args.data = { polls: polls.push(createPoll) };
+            cache.writeQuery(args);
           }}
     >
-      {createMutation => (<Formik
+      {mutate => (<Formik
         initialValues={{
-          prompt: props.prompt,
-          options: props.options,
+          question: '',
+          options: '',
         }}
 
         validate={(values) => {
           const errors = {};
-          if (values.prompt.trim() === '') errors.prompt = 'Please enter a question';
-          if (values.prompt.length > 255) errors.prompt = 'Must be less than 255 characters';
+          if (values.question.trim() === '') errors.question = 'Please enter a question';
+          if (values.question.length > 255) errors.question = 'Must be less than 255 characters';
           if (values.options.trim() === '') errors.options = 'Please enter options';
           return errors;
         }}
 
-        onSubmit={async (values, { setSubmitting }) => {
-          try {
-            await createMutation({ variables: { input: { ...values, userId: currentUser.id } } });
-            setSubmitting(false);
-          } catch (err) {
+        onSubmit={(values, { setSubmitting }) => {
+          mutate({ variables: { input: { ...values, userId: currentUser.id } } })
+          .then(({ data: { createPoll: { id } } }) => {
+           history.push(`/poll/${id}`);
+          })
+          .catch((err) => {
             setSubmitting(false);
             onError(err);
-          }
+          });
         }}
 
         render={({
-          values,
           errors,
           handleChange,
           handleBlur,
@@ -58,19 +62,18 @@ const PollEditor = function PollEditor(props) {
         }) => (
 
           <form onSubmit={handleSubmit} className="px-4 py-3">
-            <h1>{props.prompt ? 'Edit' : 'New'} Poll</h1>
+            <h1>New Poll</h1>
             <div className="form-group">
-              <label className="control-label" htmlFor="prompt">Question</label>
+              <label className="control-label" htmlFor="question">Question</label>
               <input
                 type="text"
-                id="prompt"
-                name="prompt"
+                id="question"
+                name="question"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.prompt}
-                className={classNames('form-control', { 'is-invalid': errors.prompt })}
+                className={classNames('form-control', { 'is-invalid': errors.question })}
               />
-              {errors.prompt ? <small className="text-danger">{errors.prompt}</small> :
+              {errors.question ? <small className="text-danger">{errors.question}</small> :
               <small className="text-muted">Must not be greater than 255 characters</small>}
             </div>
             <div className="form-group">
@@ -80,7 +83,6 @@ const PollEditor = function PollEditor(props) {
                 name="options"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.options}
                 className={classNames('form-control', { 'is-invalid': errors.options })}
               />
               {errors.options && <small className="text-danger">{errors.options}</small>}
@@ -95,13 +97,7 @@ const PollEditor = function PollEditor(props) {
 };
 
 PollEditor.propTypes = {
-  prompt: PropTypes.string,
-  options: PropTypes.string,
-};
-
-PollEditor.defaultProps = {
-  prompt: '',
-  options: '',
+  history: ReactRouterPropTypes.history.isRequired,
 };
 
 export default PollEditor;

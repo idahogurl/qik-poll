@@ -16,44 +16,36 @@ type Mutation {
   createUser(input: UserInput!): User
   updateUser(id: String!, input: UserInput!): User
   deleteUser(id: String!): GenericResponse
-  createUserSelection(pollOptionId: UUID): UserSelection
-  updateUserSelection(id: UUID!, pollOptionId: UUID): UserSelection
-  deleteUserSelection(id: UUID!): GenericResponse
   createPoll(input: PollInput!): Poll
-  updatePoll(id: UUID!, userId: String, prompt: String!): Poll
+  updatePoll(id: UUID!, question: String!): Poll
   deletePoll(id: UUID!): GenericResponse
   createPollOption(pollId: UUID!, option: String!): PollOption
-  updatePollOption(id: UUID!,  option: String!): PollOption
+  updatePollOption(id: UUID!, option: String!): PollOption
   deletePollOption(id: UUID!): GenericResponse
+  vote(id: UUID!, input: PollOptionInput!) : PollOption
 }
 
 input PollInput {
   userId: String!
-  prompt: String!
+  question: String!
   options: String!
 }
 
 input UserInput {
-  name: String!,
-  email: String!,
-  password: String!,
-  passwordResetToken: String,
-  passwordResetExpires: String,
-  gender: String,
-  location: String,
-  website: String,
-  picture: String,
-  facebook: String,
-  twitter: String,
-  google: String,
-  vk: String
+  name: String!
+  displayName: String!
+  email: String!
+}
+
+input PollOptionInput {
+  pollId: UUID!
+  option: String!
 }
 
 type Poll {
   id: UUID!
   userId: UUID!
-  prompt: String!
-  published: Boolean
+  question: String!
   createdAt: Date!
   updatedAt: Date!
   deletedAt: Date!
@@ -70,15 +62,10 @@ type PollOption {
   id: UUID!
   pollId: UUID!
   option: String!,
+  votes: Int!
   createdAt: Date!
   updatedAt: Date!
   deletedAt: Date!
-  userSelections(
-    limit: Int
-    order: String
-    where: JSON
-    offset: Int
-  ): [UserSelection]
   poll: Poll
 }
 
@@ -93,16 +80,6 @@ type Query {
     id: UUID
     where: JSON
   ): User
-  userSelections(
-    limit: Int
-    order: String
-    where: JSON
-    offset: Int
-  ): [UserSelection]
-  userSelection(
-    id: UUID
-    where: JSON
-  ): UserSelection
   polls(
     limit: Int
     order: String
@@ -127,19 +104,9 @@ type Query {
 
 type User {
   id: String!
+  displayName: String!
   name: String!
   email: String!
-  password: String!
-  passwordResetToken: String
-  passwordResetExpires: String
-  gender: String
-  location: String
-  website: String
-  picture: String
-  facebook: String
-  twitter: String
-  google: String
-  vk: String
   createdAt: Date!
   updatedAt: Date!
   deletedAt: Date!
@@ -149,11 +116,4 @@ type User {
     where: JSON
     offset: Int
   ): [Poll]
-}
-
-type UserSelection {
-  id: UUID!
-  pollOptionId: UUID
-  poll: Poll
-  pollOption: PollOption
 }

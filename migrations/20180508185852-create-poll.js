@@ -16,13 +16,9 @@ module.exports = {
           },
           allowNull: false,
         },
-        prompt: {
+        question: {
           type: Sequelize.DataTypes.STRING,
           allowNull: false,
-        },
-        published: {
-          type: Sequelize.DataTypes.BOOLEAN,
-          default: 1,
         },
         created_at: {
           type: Sequelize.DataTypes.DATE,
@@ -38,11 +34,6 @@ module.exports = {
         name: 'poll_deleted_at_index',
         method: 'BTREE',
         fields: ['deleted_at'],
-      });
-      await queryInterface.addIndex('polls', {
-        name: 'poll_published_index',
-        method: 'BTREE',
-        fields: ['published'],
       });
       await queryInterface.addIndex('polls', {
         name: 'poll_user_id_index',

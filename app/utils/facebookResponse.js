@@ -17,5 +17,5 @@ export function processResponse(response) {
 }
 
 export function handleError(error) {
-  onError('An unknown error has occurred. If this issue continues contact support.', error);
+  onError(error);
 }

@@ -5,10 +5,11 @@ import { FelaComponent } from 'react-fela';
 const style = {
   border: 0,
   color: 'blue',
-  textDecoration: 'underline',
+  borderBottom: '1px solid blue',
   backgroundColor: 'transparent',
   cursor: 'pointer',
-  margin: 0,
+  padding: 0,
+  marginLeft: '.5em',
 };
 
 const HyperlinkButton = function HyperlinkButton(props) {

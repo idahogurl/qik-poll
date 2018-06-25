@@ -34,16 +34,17 @@ class NavBar extends PureComponent {
 
       this.setState({ displayName: null }, this.refreshPage());
     } catch (err) {
-      onError('An unknown error occurred. Contact support if this issue continues.', err);
+      onError(err);
     }
   }
 
   refreshPage() {
     const { history, location, match } = this.props;
+    const pathname = `/${location.pathname.substring(match.path.length)}`;
 
     history.replace({
       ...location,
-      pathname: location.pathname.substring(match.path.length),
+      pathname,
     });
   }
 
@@ -58,7 +59,9 @@ class NavBar extends PureComponent {
           </div>
           <span className="nav navbar-right">
             <span id="userAccount" className={!displayName ? 'd-none' : 'd-block'}>
-              <span>Welcome, {displayName}! | <HyperlinkButton onClick={this.onLogout}>Logout</HyperlinkButton></span>
+              <span>Welcome, {displayName}! |
+                <HyperlinkButton onClick={this.onLogout}>Logout</HyperlinkButton>
+              </span>
             </span>
             {!displayName && <LoginButton onLogin={this.onLogin} />}
           </span>

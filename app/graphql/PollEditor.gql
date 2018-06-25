@@ -1,0 +1,7 @@
+mutation createPoll($input: PollInput!) {
+  createPoll(input: $input) {
+    id
+    userId
+    question
+  }
+}

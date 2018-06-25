@@ -1,0 +1,7 @@
+mutation voteForOption($id: UUID!, $input: PollOptionInput!) {
+  vote(id: $id, input: $input) {
+    id
+    option
+    votes
+  }
+}

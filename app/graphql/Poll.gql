@@ -1,0 +1,12 @@
+query getPoll($id: UUID!) {
+  poll(id: $id) {
+    id
+    userId
+    question
+    pollOptions {
+      id
+      option
+      votes
+    }
+  }
+}

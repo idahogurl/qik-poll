@@ -1,0 +1,5 @@
+mutation deletePoll($id: UUID!) {
+  deletePoll(id: $id) {
+    success
+  }
+}
