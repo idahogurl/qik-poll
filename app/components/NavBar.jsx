@@ -40,7 +40,7 @@ class NavBar extends PureComponent {
     const currentUser = JSON.parse(window.sessionStorage.getItem('currentUser'));
 
     return (
-      <nav className="navbar navbar-expand-lg">
+      <nav className="navbar">
         <img src="images/logo_sm.svg" alt="QikPoll Logo" />
         <div className="navbar-right mt-2 mt-sm-0">
           <span id="userAccount" className={!currentUser ? 'd-none' : 'd-block'}>
