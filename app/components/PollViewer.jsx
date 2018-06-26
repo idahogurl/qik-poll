@@ -37,7 +37,7 @@ const PollViewer = function PollViewer(props) {
       {mutate => (
         <Query query={GET_POLL} variables={variables}>
           {({ loading, error, data }) => {
-              if (loading) return <Loading container"page" />;
+              if (loading) return <Loading container="page" />;
 
               if (error) {
                 onError(error);

@@ -121,7 +121,7 @@ const PollOptionList = function PollOptionList(props) {
                 </ul>
                 {errors.pollOptions && <div><small className="text-danger">{errors.pollOptions}</small></div>}
                 <button type="submit" className="btn btn-primary mt-3" disabled={isDeleting || isSubmitting}>
-                  {isSubmitting ? <span><Loading container"button" />Vote</span> : 'Vote'}
+                  {isSubmitting ? <span><Loading container="button" />Vote</span> : 'Vote'}
                 </button>
               </form>
             );

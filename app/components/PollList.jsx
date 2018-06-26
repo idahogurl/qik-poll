@@ -25,7 +25,7 @@ const PollList = function PollList(props) {
     <div className="p-3">
       <Query query={GET_POLLS} variables={{ order: 'created_at ASC' }}>
         {({ loading, error, data }) => {
-        if (loading) return <Loading container"page" />;
+        if (loading) return <Loading container="page" />;
 
         if (error) {
           onError(error);
