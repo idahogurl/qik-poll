@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import randomColor from 'randomcolor';
+import palette from 'google-palette';
 import { RadialChart, DiscreteColorLegend } from 'react-vis';
 
 const PollChart = function PollChart(props) {
@@ -9,15 +9,11 @@ const PollChart = function PollChart(props) {
   };
 
   const getChartData = function getChartData(options, colors) {
-    return options.map((c, index) => ({ title: c.option, count: c.votes, color: colors[index] }));
+    return options.map((c, index) => ({ title: `${c.option} (${c.votes})`, count: c.votes, color: colors[index] }));
   };
 
   if (hasVotes(props.options)) {
-    const colors = randomColor({
-      luminosity: 'random',
-      hue: 'random',
-      count: props.options.length,
-    });
+    const colors = palette('tol-rainbow', props.options.length).map(c => `#${c}`);
 
     const data = getChartData(props.options, colors);
     return (

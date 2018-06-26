@@ -22,7 +22,7 @@ module.exports = {
       "jsx-a11y/anchor-is-valid": [ "error", {
         "components": [ "Link", "NavLink" ],
         "specialLink": [ "to" ],
-        "babel/semi": 1
+        "react/sort-comp": 0,
       }]
     }
 };

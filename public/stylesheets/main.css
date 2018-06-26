@@ -43,6 +43,11 @@ nav {
 
 .main a {
   color: white;
+  font-size: 12px;
+}
+
+.main img {
+  width: 6em;
 }
 
 .main a.active > .col {
@@ -58,7 +63,8 @@ nav {
   margin-top: 20px; }
 
 #newOption {
-  width: 400px; }
+  width: 90%;
+  border: 1px solid Gainsboro;}
 
 .chart {
   width: 600px;
@@ -77,3 +83,8 @@ nav {
   width: 200px;
   height: 100px;
   margin: -50px 0 0 -100px; }
+
+.rv-discrete-color-legend-item__color {
+  width: 2em;
+  height: 2em;
+}

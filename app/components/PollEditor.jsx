@@ -13,7 +13,6 @@ import Loading from './Loading';
 import onError from '../utils/onError';
 
 const PollEditor = function PollEditor(props) {
-  const { window } = global;
   const currentUser = JSON.parse(window.sessionStorage.getItem('currentUser'));
 
   if (!currentUser) return <Instructions>Login to make a poll.</Instructions>;

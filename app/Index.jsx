@@ -10,7 +10,7 @@ import { Provider } from 'react-fela';
 import { BrowserRouter } from 'react-router-dom';
 import routes from './routes';
 
-const { document } = global.window;
+const { document } = window;
 const client = new ApolloClient({
   uri: '/graphql',
 });

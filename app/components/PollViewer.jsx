@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { Mutation, Query } from 'react-apollo';
 import { Formik } from 'formik';
+import FacebookProvider, { ShareButton } from 'react-facebook';
 
 import GET_POLL from '../graphql/Poll.gql';
 import GET_POLLS from '../graphql/PollList.gql';
@@ -14,14 +15,11 @@ import PollChart from './PollChart';
 
 import onError from '../utils/onError';
 
-// import FacebookProvider, { ShareButton } from 'react-facebook';
-
 const PollViewer = function PollViewer(props) {
   const { history, match: { params: { id } } } = props;
 
   const variables = { id };
 
-  const { window } = global;
   const currentUser = JSON.parse(window.sessionStorage.getItem('currentUser'));
 
   return (
@@ -61,10 +59,30 @@ const PollViewer = function PollViewer(props) {
                     isSubmitting,
                   }) => (
                     <div className="m-3">
-                      <div id="fb-root" />
                       <div className="row">
                         <div className="col-sm-6">
                           <h1 className="h2">{poll.question}</h1>
+                          <div className="row">
+                            <div className="col col-auto">
+                              <FacebookProvider appId="445598382444876">
+                                <ShareButton
+                                  href={`https://qikpoll.herokuapp.com/poll/${id}`}
+                                  className="btn btn-sm fb-login-button d-inline"
+                                  iconClassName="fa fa-2x fa-facebook-official align-middle"
+                                >
+                                  <span className="align-middle">Share</span>
+                                </ShareButton>
+                              </FacebookProvider>
+                            </div>
+                            {currentUser && currentUser.id === poll.userId &&
+                            <div className="col">
+                              <form onSubmit={handleSubmit}>
+                                <button type="submit" className="btn btn-danger" disabled={isSubmitting}>
+                                  {isSubmitting ? <span><Loading container="button" />Deleting</span> : 'Delete'}
+                                </button>
+                              </form>
+                            </div>}
+                          </div>
                           <PollOptionList
                             pollId={id}
                             pollOptions={poll.pollOptions}
@@ -73,12 +91,8 @@ const PollViewer = function PollViewer(props) {
                           <div />
                         </div>
                         <div className="col-sm-6">
-                          {currentUser && currentUser.id === poll.userId &&
-                          <form onSubmit={handleSubmit}>
-                            <button type="submit" className="btn btn-danger mt-3" disabled={isSubmitting}>
-                              {isSubmitting ? <span><Loading container"button" />Deleting</span> : 'Delete'}
-                            </button>
-                          </form>}
+                          <h2 className="h4">Current Results</h2>
+                          <hr />
                           <PollChart options={poll.pollOptions} />
                         </div>
                       </div>

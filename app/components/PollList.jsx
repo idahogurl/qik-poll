@@ -12,8 +12,6 @@ import onError from '../utils/onError';
 
 const PollList = function PollList(props) {
   const { match: { path } } = props;
-
-  const { window } = global;
   const currentUser = JSON.parse(window.sessionStorage.getItem('currentUser'));
 
   const viewMyPolls = path.includes('myPolls');

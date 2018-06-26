@@ -15,7 +15,7 @@ const style = {
 };
 
 const widths = {
-  sm: '128px',
+  sm: '96px',
 };
 
 const IndexScreen = function IndexScreen(props) {
@@ -29,20 +29,20 @@ const IndexScreen = function IndexScreen(props) {
           <div className="row main text-center">
             <NavLink to="/viewPolls">
               <div className="col col-xs-4 first-col">
-                <NavBarImage src="images/clipboard.svg" alt="View Polls" width="48px" widths={widths} />
-                <div className="d-none d-sm-block">View Polls</div>
+                <img src="images/clipboard.svg" alt="View Polls" className="d-none d-sm-block" />
+                <div >View Polls</div>
               </div>
             </NavLink>
             <NavLink to="/myPolls">
               <div className="col col-xs-4">
-                <NavBarImage src="images/myPolls.svg" alt="My Polls" width="48px" widths={widths} />
-                <div className="d-none d-sm-block">My Polls</div>
+                <img src="images/myPolls.svg" alt="My Polls" className="d-none d-sm-block" />
+                <div>My Polls</div>
               </div>
             </NavLink>
             <NavLink to="/newPoll">
               <div className="col col-xs-4">
-                <NavBarImage src="images/clipboardNew.svg" alt="New Poll" width="48px" widths={widths} />
-                <div className="d-none d-sm-block">New Poll</div>
+                <img src="images/clipboardNew.svg" alt="New Poll" width="36px" className="d-none d-sm-block" />
+                <div>New Poll</div>
               </div>
             </NavLink>
           </div>
@@ -58,7 +58,7 @@ const IndexScreen = function IndexScreen(props) {
         </Switch>
         <div className="text-right m-3">
           <small>
-            <a href="https ://www.freepik.com/free-vector/people-avatars_761436.htm">Icon</a> and&nbsp;
+            <a href="https://www.freepik.com/free-vector/people-avatars_761436.htm">Icon</a> and&nbsp;
             <a href="https://www.freepik.com/free-vector/round-background-with-person-filling-out-a-form_1078424.htm">icon</a>&nbsp;designed by Freepik
           </small>
         </div>

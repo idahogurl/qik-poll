@@ -116,7 +116,7 @@ const PollOptionList = function PollOptionList(props) {
                         setFieldValue('pollOptions', values.newOptionId, false);
                       }}
                     />
-                    &nbsp;<small className="text-muted">Must not be greater than 50 characters</small>
+                    <div><small className="text-muted">Must not be greater than 50 characters</small></div>
                   </li>
                 </ul>
                 {errors.pollOptions && <div><small className="text-danger">{errors.pollOptions}</small></div>}

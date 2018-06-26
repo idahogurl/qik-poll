@@ -6,22 +6,12 @@ import HyperlinkButton from './HyperlinkButton';
 import onError from '../utils/onError';
 
 class NavBar extends PureComponent {
-  constructor(props) {
-    super(props);
+  onLogin = this.onLogin.bind(this);
+  refreshPage = this.refreshPage.bind(this);
+  onLogout = this.onLogout.bind(this);
 
-    const window = global;
-    const currentUser = JSON.parse(window.sessionStorage.getItem('currentUser'));
-
-    this.state = { displayName: currentUser ? currentUser.first_name : null };
-    this.onLogin = this.onLogin.bind(this);
-    this.onLogout = this.onLogout.bind(this);
-    this.refreshPage = this.refreshPage.bind(this);
-  }
-
-  onLogin(data) {
-    const window = global;
-    window.sessionStorage.setItem('currentUser', JSON.stringify(data));
-    this.setState({ displayName: data.first_name });
+  onLogin(profile) {
+    window.sessionStorage.setItem('currentUser', JSON.stringify(profile));
     this.refreshPage();
   }
 
@@ -29,10 +19,8 @@ class NavBar extends PureComponent {
     try {
       await get('/logout');
 
-      const window = global;
       window.sessionStorage.clear();
-
-      this.setState({ displayName: null }, this.refreshPage());
+      this.refreshPage();
     } catch (err) {
       onError(err);
     }
@@ -49,22 +37,18 @@ class NavBar extends PureComponent {
   }
 
   render() {
-    const { displayName } = this.state;
+    const currentUser = JSON.parse(window.sessionStorage.getItem('currentUser'));
 
     return (
-      <nav className="navbar">
-        <div className="container-fluid">
-          <div className="navbar-header">
-            <img src="images/logo_sm.svg" alt="QikPoll Logo" />
-          </div>
-          <span className="nav navbar-right">
-            <span id="userAccount" className={!displayName ? 'd-none' : 'd-block'}>
-              <span>Welcome, {displayName}! |
-                <HyperlinkButton onClick={this.onLogout}>Logout</HyperlinkButton>
-              </span>
+      <nav className="navbar navbar-expand-lg">
+        <img src="images/logo_sm.svg" alt="QikPoll Logo" />
+        <div className="navbar-right mt-2 mt-sm-0">
+          <span id="userAccount" className={!currentUser ? 'd-none' : 'd-block'}>
+            <span>Welcome, {currentUser && currentUser.first_name}! |
+              <HyperlinkButton onClick={this.onLogout}>Logout</HyperlinkButton>
             </span>
-            {!displayName && <LoginButton onLogin={this.onLogin} />}
           </span>
+          {!currentUser && <LoginButton onLogin={this.onLogin} />}
         </div>
       </nav>);
   }
