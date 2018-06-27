@@ -7,18 +7,11 @@ var fs        = require('fs')
 var path      = require('path')
 var Sequelize = require('sequelize')
 var basename  = path.basename(__filename)
-var env       = process.env.NODE_ENV || 'development'
 var db        = {}
 
-if (process.env.HEROKU_POSTGRESQL_BRONZE_URL) {
+if (process.env.DATABASE_URL) {
     // the application is executed on Heroku ... use the postgres database
-    sequelize = new Sequelize(process.env.HEROKU_POSTGRESQL_BRONZE_URL, {
-      dialect:  'postgres',
-      protocol: 'postgres',
-      port:     match[4],
-      host:     match[3],
-      logging:  true //false
-    })
+    var sequelize = require('sequelize-heroku').connect(Sequelize);
   } else {
     const config = {
       "username": "username",
