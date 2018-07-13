@@ -41,7 +41,7 @@ app.use('/logout', (req, res, next) => {
 
 // Always return the main index.html, so react-router renders the route in the client
 app.get('*', (req, res) => {
-  console.log(req.headers);
+  console.error(req.headers);
   if (req.headers['x-forwarded-proto'] !== 'https') {
     res.redirect(302, `https://${req.hostname}${req.originalUrl}`);
   } else {
