@@ -14,8 +14,10 @@ const style = {
 
 const HyperlinkButton = function HyperlinkButton(props) {
   return (
-    <FelaComponent render={() => (
-      <button style={style} onClick={props.onClick}>{props.children}</button>)}
+    <FelaComponent
+      style={style}
+      render={({ className }) => (
+        <button className={className} onClick={props.onClick}>{props.children}</button>)}
     />
   );
 };
