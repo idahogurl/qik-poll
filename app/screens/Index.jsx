@@ -2,7 +2,6 @@ import React from 'react';
 import { Switch, Route, NavLink } from 'react-router-dom';
 import { FelaComponent } from 'react-fela';
 import NavBar from '../components/NavBar';
-import NavBarImage from '../components/NavBarImage';
 import PollList from '../components/PollList';
 import PollEditor from '../components/PollEditor';
 import PollViewer from '../components/PollViewer';
@@ -12,10 +11,6 @@ const style = {
   flexDirection: 'column',
   alignItems: 'center',
   height: '100vh',
-};
-
-const widths = {
-  sm: '96px',
 };
 
 const IndexScreen = function IndexScreen(props) {

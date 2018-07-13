@@ -29,7 +29,7 @@ app.get('/graphiql', getUser, graphiqlExpress({
   endpointURL: '/graphql',
 }));
 
-app.post('/auth/facebook', sslRedirect(), (req, res, next) => {
+app.post('/auth/facebook', (req, res, next) => {
   processLogin(req, res, next);
 });
 
@@ -41,7 +41,10 @@ app.use('/logout', (req, res, next) => {
 });
 
 // Always return the main index.html, so react-router renders the route in the client
-app.get('*', sslRedirect(), (req, res) => {
+app.get('*', (req, res) => {
+  if (req.headers['x-forwarded-proto'] !== 'https') {
+    res.redirect(302, `https://${req.hostname}${req.originalUrl}`);
+  }
   res.sendFile(path.resolve(__dirname, '..', 'public', 'index.html'));
 });
 
