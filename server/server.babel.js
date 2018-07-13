@@ -41,7 +41,7 @@ app.use('/logout', (req, res, next) => {
 });
 
 // Always return the main index.html, so react-router renders the route in the client
-app.get('*', (req, res) => {
+app.get('*', sslRedirect(), (req, res) => {
   res.sendFile(path.resolve(__dirname, '..', 'public', 'index.html'));
 });
 
