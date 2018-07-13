@@ -20,7 +20,6 @@ app.use('/', express.static('public'));
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(sslRedirect());
 
 const typeDefs = fs.readFileSync(path.resolve(__dirname, 'graphql/schema.gql'), 'utf8');
 const schema = makeExecutableSchema({ typeDefs, resolvers });
@@ -30,7 +29,7 @@ app.get('/graphiql', getUser, graphiqlExpress({
   endpointURL: '/graphql',
 }));
 
-app.post('/auth/facebook', (req, res, next) => {
+app.post('/auth/facebook', sslRedirect(), (req, res, next) => {
   processLogin(req, res, next);
 });
 
