@@ -43,8 +43,9 @@ app.use('/logout', (req, res, next) => {
 app.get('*', (req, res) => {
   if (req.headers['x-forwarded-proto'] !== 'https') {
     res.redirect(302, `https://${req.hostname}${req.originalUrl}`);
+  } else {
+    res.sendFile(path.resolve(__dirname, '..', 'public', 'index.html'));
   }
-  res.sendFile(path.resolve(__dirname, '..', 'public', 'index.html'));
 });
 
 app.listen(port, () => {
