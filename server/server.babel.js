@@ -5,7 +5,7 @@ import path from 'path';
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express';
 import fs from 'fs';
 import { makeExecutableSchema } from 'graphql-tools';
-import forceSsl from 'force-ssl-heroku';
+import sslRedirect from 'heroku-ssl-redirect';
 import getUser from './getUser';
 import resolvers from './graphql/resolvers';
 import processLogin from './login';
@@ -20,7 +20,7 @@ app.use('/', express.static('public'));
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(forceSsl());
+app.use(sslRedirect());
 
 const typeDefs = fs.readFileSync(path.resolve(__dirname, 'graphql/schema.gql'), 'utf8');
 const schema = makeExecutableSchema({ typeDefs, resolvers });
