@@ -5,7 +5,6 @@ import path from 'path';
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express';
 import fs from 'fs';
 import { makeExecutableSchema } from 'graphql-tools';
-import sslRedirect from 'heroku-ssl-redirect';
 import getUser from './getUser';
 import resolvers from './graphql/resolvers';
 import processLogin from './login';
