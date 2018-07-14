@@ -1,9 +1,7 @@
 export default function (req, res, next) {
-  const isGraphQL = req.url.indexOf('graphql') !== -1;
-  if (!isGraphQL && process.env.NODE_ENV === 'production' &&
-    (!req.secure || req.headers['x-forwarded-proto'] !== 'https')) {
-    const sslUrl = ['https://', req.hostname, req.url].join('');
-    return res.redirect(sslUrl);
+  if (process.env.NODE_ENV === 'production' && req.url !== '/graphql' && !req.secure) {
+    const sslUrl = `https://${req.hostname}${req.url}`;
+    return res.redirect(301, sslUrl);
   }
 
   return next();
