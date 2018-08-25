@@ -1,30 +1,20 @@
 import React, { Fragment } from 'react';
 import { Switch, Route, NavLink } from 'react-router-dom';
-import classNames from 'classnames';
-import { FelaComponent } from 'react-fela';
 import NavBar from '../components/NavBar';
 import PollList from '../components/PollList';
 import PollEditor from '../components/PollEditor';
 import PollViewer from '../components/PollViewer';
 
-const style = {
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  height: '100vh',
-};
 
 const IndexScreen = function IndexScreen(props) {
+  //Fix for Facebook Login API
   if (window.location.protocol === 'http:' && window.location.hostname !== 'localhost') {
     window.location.href = window.location.href.replace('http', 'https');
   }
 
   return (
-    <FelaComponent
-      style={style}
-      render={({ className }) => (
         <Fragment>
-          <div className={classNames('navbar-wrapper', className)}>
+          <div className='navbar-wrapper'>
             <NavBar {...props} />
           </div>
           <div className="container-fluid commands-wrapper">
@@ -66,9 +56,8 @@ const IndexScreen = function IndexScreen(props) {
               </small>
             </div>
           </div>
-        </Fragment>)}
-    />
-  );
+        </Fragment>
+	);
 };
 
 export default IndexScreen;
