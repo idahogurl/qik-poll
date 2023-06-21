@@ -41,7 +41,7 @@
     "graphql-tools": "^3.0.2",
     "graphql-tools-types": "^1.1.21",
     "merge-graphql-schemas": "^1.5.1",
-    "pg": "^7.4.3",
+    "pg": "^8.4.0",
     "prop-types": "^15.6.1",
     "react": "^16.4.1",
     "react-apollo": "^2.1.7",
@@ -51,11 +51,11 @@
     "react-router-dom": "^4.2.2",
     "react-router-prop-types": "^1.0.4",
     "react-vis": "^1.9.4",
-    "sequelize": "^5.10.1",
+    "sequelize": "^6.1.0",
     "sequelize-heroku": "^2.0.0",
     "uuid": "^3.2.1",
     "webpack": "4.19.0",
-    "webpack-cli": "3.0.4"
+    "webpack-cli": "4.0.0"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.5",
