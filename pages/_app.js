@@ -5,8 +5,7 @@ import { SessionProvider } from 'next-auth/react';
 import { ApolloProvider } from '@apollo/client';
 
 import '@fortawesome/fontawesome-svg-core/styles.css';
-// import 'bootstrap/dist/css/bootstrap.min.css';
-// import '../styles/globals.css';
+import '../styles/globals.css';
 
 import client from '../lib/apolloClient';
 import ErrorBoundary from '../lib/components/ErrorBoundary';

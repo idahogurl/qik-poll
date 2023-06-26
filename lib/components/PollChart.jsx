@@ -5,7 +5,7 @@ import { RadialChart, DiscreteColorLegend } from 'react-vis';
 
 const PollChart = function PollChart(props) {
   const hasVotes = function hasVotes(data) {
-    return data.some(d => d.votes > 0);
+    return data.some((d) => d.votes > 0);
   };
 
   const getChartData = function getChartData(options, colors) {
@@ -13,29 +13,31 @@ const PollChart = function PollChart(props) {
   };
 
   if (hasVotes(props.options)) {
-    const colors = palette('tol-rainbow', props.options.length).map(c => `#${c}`);
+    const colors = palette('tol-rainbow', props.options.length).map((c) => `#${c}`);
 
     const data = getChartData(props.options, colors);
     return (
-      <Fragment>
+      <>
         <RadialChart
           innerRadius={75}
           radius={115}
-          getAngle={d => d.count}
+          getAngle={(d) => d.count}
           data={data}
           height={250}
           width={250}
-          getLabel={d => d.title}
+          getLabel={(d) => d.title}
           colorType="literal"
         />
-        <DiscreteColorLegend items={data.map(d => d.title)} colors={colors} />
-      </Fragment>);
+        <DiscreteColorLegend items={data.map((d) => d.title)} colors={colors} />
+      </>
+    );
   }
 
   return (
     <div className="chart">
       <div id="noVotes">
-          No Data for Chart<br />
+        No Data for Chart
+        <br />
         <span className="fa fa-pie-chart fa-4x" />
       </div>
     </div>

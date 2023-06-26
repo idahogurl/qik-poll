@@ -5,7 +5,7 @@ import Poll from './poll';
 import PollOption from './pollOption';
 import User from './user';
 
-console.log('POLL', Poll)
+console.log('POLL', Poll);
 const env = process.env.NODE_ENV || 'development';
 const config = configs[env];
 

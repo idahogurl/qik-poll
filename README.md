@@ -14,21 +14,17 @@ Unregistered users can vote on polls and share them via Facebook. Registered use
 - As an authenticated user, if I don't like the options on a poll, I can create a new option.
 
 **Backend**:
-- Express (v4)
-- Babel (v6 with presets env, react, stage-2)
-- Sequelize (v4)
-- Apollo GraphQL Server (v1.3)
+
+- Next.js (v13)
+- Sequelize (v6)
+- Yoga GraphQL Server 
 
 **Database**:
-- Development: SQLITE
-- Production: Postgres on Heroku
+
+- Postgres
 
 **Frontend**:
-- React (v16.4)
-- React Router (v4)
-- React-Facebook to integrate Facebook Login
-- Apollo GraphQL Client (v2.1)
+- 
+- Apollo GraphQL Client (v3)
 - Bootstrap (v4)
-- FontAwesome (v4)
-- Fela
-- Awesome Notifications
+- FontAwesome (v6)

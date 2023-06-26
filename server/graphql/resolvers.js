@@ -1,11 +1,12 @@
 import GraphQLToolTypes from 'graphql-tools-types';
 import { v4 as uuid } from 'uuid';
-import db from '../db/models'
-const { User, Poll, PollOption } = db
+import db from '../db/models';
+
+const { User, Poll, PollOption } = db;
 const parseOrder = function parseOrder(order) {
   if (order) {
     const columns = order.split(', ');
-    const columnOrder = columns.map(c => c.split(' '));
+    const columnOrder = columns.map((c) => c.split(' '));
     return columnOrder;
   }
   return [];
@@ -40,7 +41,7 @@ export default {
       const poll = await Poll.create({ id, userId, question });
 
       // split newline
-      const pollOptions = options.split('\n').map(m => ({ option: m, pollId: poll.id }));
+      const pollOptions = options.split('\n').map((m) => ({ option: m, pollId: poll.id }));
       await PollOption.bulkCreate(pollOptions);
 
       return poll;
@@ -114,7 +115,7 @@ export default {
     polls: async (_, {
       limit, order, where, offset,
     }) => {
-    console.log(Poll);
+      console.log(Poll);
       const polls = await Poll.findAll({
         limit, order: parseOrder(order), where: parseWhere(where), offset,
       });
@@ -123,7 +124,7 @@ export default {
     poll: async (_, {
       id, where,
     }) => {
-      const poll = await Poll.findById(id, { where });
+      const poll = await Poll.findByPk(id, { where });
       return poll;
     },
     pollOptions: async (_, {

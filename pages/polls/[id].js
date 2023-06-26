@@ -1,12 +1,16 @@
+import { useRouter } from 'next/router';
 import { Formik } from 'formik';
 import { FacebookShareButton, FacebookIcon } from 'react-share';
 
-import GET_POLL from '../graphql/Poll.gql';
-import GET_POLLS from '../graphql/PollList.gql';
-import DELETE_POLL from '../graphql/DeletePoll.gql';
+import GET_POLL from '../../lib/graphql/Poll.gql';
+import GET_POLLS from '../../lib/graphql/PollList.gql';
+import DELETE_POLL from '../../lib/graphql/DeletePoll.gql';
 
-import PollOptionList from './PollOptionList';
-import PollChart from './PollChart';
+import PollOptionList from '../../lib/components/PollOptionList';
+import PollChart from '../../lib/components/PollChart';
+import { useQuery } from '@apollo/client';
+import Spinner from '../../lib/components/Spinner';
+import ErrorNotification from '../../lib/components/ErrorNotification';
 
 const PollViewer = function PollViewer(props) {
   const { history, match: { params: { id } } } = props;
@@ -104,4 +108,18 @@ const PollViewer = function PollViewer(props) {
   );
 };
 
-export default PollViewer;
+export default function Page() {
+  const router = useRouter();
+  const {
+    loading, data, error, refetch,
+  } = useQuery(GET_POLL, {
+    variables: { id: router.query.id },
+    fetchPolicy: 'network-only',
+  });
+
+  if (loading) return <Spinner />;
+  if (error) return <ErrorNotification onDismiss={refetch} />;
+  
+
+  return <p>Post: {data.poll.id}</p>
+}

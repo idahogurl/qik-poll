@@ -7,10 +7,10 @@ const style = {
   color: 'gray',
 };
 
-const Instructions = function Instructions(props) {
+const Instructions = function Instructions({ children }) {
   return (
     <h3 style={style}>
-      {props.children}
+      {children}
     </h3>
   );
 };

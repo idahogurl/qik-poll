@@ -25,7 +25,8 @@ export default function PollOptionModel(sequelize, DataTypes) {
         defaultValue: 0,
         allowNull: false,
       },
-    }, {
+    },
+    {
       paranoid: true,
       underscored: true,
       tableName: 'poll_option',
@@ -46,4 +47,4 @@ export default function PollOptionModel(sequelize, DataTypes) {
   };
 
   return PollOption;
-};
+}

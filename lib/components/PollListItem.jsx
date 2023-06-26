@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 
-const PollListItem = function PollListItem(props) {
+const PollListItem = function PollListItem({ id, title }) {
   return (
     <li className="list-group-item">
-      <Link href={`/poll/${props.id}`}>{props.title}</Link>
-    </li>);
+      <Link href={`/polls/${id}`}>{title}</Link>
+    </li>
+  );
 };
 
 PollListItem.propTypes = {

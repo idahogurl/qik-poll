@@ -42,4 +42,4 @@ export default function PollModel(sequelize, DataTypes) {
     Poll.hasMany(PollOption);
   };
   return Poll;
-};
+}

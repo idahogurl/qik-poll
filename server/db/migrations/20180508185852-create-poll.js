@@ -1,6 +1,7 @@
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
-    return queryInterface.createTable('poll', {
+  up: async (queryInterface, Sequelize) => queryInterface.createTable(
+    'poll',
+    {
       id: {
         type: Sequelize.DataTypes.UUID,
         primaryKey: true,
@@ -28,20 +29,20 @@ module.exports = {
       },
       deleted_at: Sequelize.DataTypes.DATE,
     },
-      {
-        indexes: [
-          {
-            name: 'poll_deleted_at_index',
-            method: 'BTREE',
-            fields: ['deleted_at'],
-          }, 
-          {
-            name: 'poll_user_id_index',
-            method: 'BTREE',
-            fields: ['user_id'],
-          }
-        ]
-      });
-  },
-  down: queryInterface => queryInterface.dropTable('poll'),
+    {
+      indexes: [
+        {
+          name: 'poll_deleted_at_index',
+          method: 'BTREE',
+          fields: ['deleted_at'],
+        },
+        {
+          name: 'poll_user_id_index',
+          method: 'BTREE',
+          fields: ['user_id'],
+        },
+      ],
+    },
+  ),
+  down: (queryInterface) => queryInterface.dropTable('poll'),
 };

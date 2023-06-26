@@ -1,4 +1,3 @@
-import { useSession } from 'next-auth/react';
 import { useQuery } from '@apollo/client';
 
 import GET_POLLS from '../graphql/PollList.gql';
@@ -9,10 +8,6 @@ import PollListItem from './PollListItem';
 import Instructions from './Instructions';
 
 function PollList() {
-  //   const viewMyPolls = path.includes('myPolls');
-
-  // // Must be logged in to view their polls
-  // if (viewMyPolls && !currentUser) return <Instructions>Login to view your polls.</Instructions>;
   const {
     loading, data, error, refetch,
   } = useQuery(GET_POLLS, {
@@ -20,26 +15,25 @@ function PollList() {
     fetchPolicy: 'network-only',
   });
 
-      if (loading) return <Spinner />;
-      console.log('error', error);
-      if (error) return <ErrorNotification onDismiss={refetch}/>;
+  if (loading) return <Spinner />;
 
-      if (!data.polls) return <Instructions>Login to make a poll.</Instructions>;
+  if (error) return <ErrorNotification onDismiss={refetch} />;
 
-      // Include poll if Not viewing My Polls or viewing My Polls and poll belongs to current user
-      const listItems =
-        data.polls
-          .filter(p => (!viewMyPolls ||
-              (viewMyPolls && currentUser && p.userId === currentUser.id)))
-          .map(li => <PollListItem id={li.id} title={li.question} key={li.id} />);
+  if (!data.polls) return <Instructions>Login to make a poll.</Instructions>;
 
-      return (
-        <>
-          <Instructions>Select a poll to see the results and vote,
-            or login to make a poll.
-          </Instructions>
-          <ul className="list-group">{listItems}</ul>
-        </>);  
+  // Include poll if Not viewing My Polls or viewing My Polls and poll belongs to current user
+  const listItems = data.polls
+    .map((li) => <PollListItem id={li.id} title={li.question} key={li.id} />);
+
+  return (
+    <>
+      <Instructions>
+        Select a poll to see the results and vote,
+        or login to make a poll.
+      </Instructions>
+      <ul className="list-group">{listItems}</ul>
+    </>
+  );
 }
 
 export default PollList;
