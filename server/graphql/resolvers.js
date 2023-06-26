@@ -1,7 +1,7 @@
 import GraphQLToolTypes from 'graphql-tools-types';
-import uuid from 'uuid/v4';
-import { User, Poll, PollOption } from '../models';
-
+import { v4 as uuid } from 'uuid';
+import db from '../db/models'
+const { User, Poll, PollOption } = db
 const parseOrder = function parseOrder(order) {
   if (order) {
     const columns = order.split(', ');
@@ -114,6 +114,7 @@ export default {
     polls: async (_, {
       limit, order, where, offset,
     }) => {
+    console.log(Poll);
       const polls = await Poll.findAll({
         limit, order: parseOrder(order), where: parseWhere(where), offset,
       });
