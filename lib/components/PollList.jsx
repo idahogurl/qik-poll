@@ -24,9 +24,16 @@ function PollList({ userId }) {
 
   if (error) return <ErrorNotification onDismiss={refetch} />;
 
-  if (!data.polls) return <Instructions>Login to make a poll.</Instructions>;
+  if (!data.polls.length) {
+    return (
+      <Instructions>
+        No polls available.
+        {' '}
+        {userId ? 'Create a poll.' : 'Log in and create a poll.'}
+      </Instructions>
+    );
+  }
 
-  // Include poll if Not viewing My Polls or viewing My Polls and poll belongs to current user
   const listItems = data.polls
     .map((li) => <PollListItem id={li.id} title={li.question} key={li.id} />);
 
