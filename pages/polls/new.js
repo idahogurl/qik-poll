@@ -35,12 +35,12 @@ function PollEditor({ sessionUserId }) {
           return errors;
         }}
         onSubmit={async (values) => {
-          const poll = await createMutation(
+          const { data: { createPoll } } = await createMutation(
             {
               variables: { input: { ...values, userId: sessionUserId } },
             },
           );
-          router.push(`/polls/${poll.id}`);
+          router.push(`/polls/${createPoll.id}`);
         }}
       >
         {({
@@ -52,7 +52,7 @@ function PollEditor({ sessionUserId }) {
         }) => (
           <form onSubmit={handleSubmit} className="px-4 py-3">
             <h1>New Poll</h1>
-            {loading && <Spinner size={4} />}
+            {loading && <Spinner />}
             {error && <ErrorNotification onDismiss={reset} />}
             <div className="form-group">
               <label className="control-label" htmlFor="question">

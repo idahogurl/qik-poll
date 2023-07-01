@@ -13,7 +13,7 @@ function Layout({ children }) {
       <div className="container-fluid commands-wrapper">
         <div className="container-fluid">
           <div className="row main text-center">
-            <Link href="/polls/view">
+            <Link href="/">
               <div className="col col-xs-4 first-col">
                 <Image src="/images/clipboard.svg" alt="View Polls" width="72" height="128" className="d-none d-sm-block" />
                 <div>View Polls</div>
@@ -48,7 +48,7 @@ function Layout({ children }) {
           </small>
         </div>
       </div>
-      
+
     </>
   );
 }

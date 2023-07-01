@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import { useQuery } from '@apollo/client';
 
 import GET_POLLS from '../graphql/PollList.gql';
@@ -7,11 +9,14 @@ import ErrorNotification from './ErrorNotification';
 import PollListItem from './PollListItem';
 import Instructions from './Instructions';
 
-function PollList() {
+function PollList({ userId }) {
+  const variables = { order: 'created_at ASC' };
+  if (userId) variables.where = JSON.stringify({ userId });
+
   const {
     loading, data, error, refetch,
   } = useQuery(GET_POLLS, {
-    variables: { order: 'created_at ASC' },
+    variables,
     fetchPolicy: 'network-only',
   });
 
@@ -27,13 +32,23 @@ function PollList() {
 
   return (
     <>
+      {!userId && (
       <Instructions>
         Select a poll to see the results and vote,
         or login to make a poll.
       </Instructions>
+      )}
       <ul className="list-group">{listItems}</ul>
     </>
   );
 }
+
+PollList.propTypes = {
+  userId: PropTypes.string,
+};
+
+PollList.defaultProps = {
+  userId: undefined,
+};
 
 export default PollList;

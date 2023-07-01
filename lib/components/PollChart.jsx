@@ -1,21 +1,18 @@
-import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import palette from 'google-palette';
 import { RadialChart, DiscreteColorLegend } from 'react-vis';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPieChart } from '@fortawesome/free-solid-svg-icons';
 
-const PollChart = function PollChart(props) {
-  const hasVotes = function hasVotes(data) {
-    return data.some((d) => d.votes > 0);
-  };
+const hasVotes = function hasVotes(data) {
+  return data.some((d) => d.votes > 0);
+};
 
-  const getChartData = function getChartData(options, colors) {
-    return options.map((c, index) => ({ title: `${c.option} (${c.votes})`, count: c.votes, color: colors[index] }));
-  };
+const PollChart = function PollChart({ options }) {
+  if (hasVotes(options)) {
+    const colors = palette('tol-rainbow', options.length).map((c) => `#${c}`);
 
-  if (hasVotes(props.options)) {
-    const colors = palette('tol-rainbow', props.options.length).map((c) => `#${c}`);
-
-    const data = getChartData(props.options, colors);
+    const data = options.map((c, index) => ({ title: `${c.option} (${c.votes})`, count: c.votes, color: colors[index] }));
     return (
       <>
         <RadialChart
@@ -38,7 +35,7 @@ const PollChart = function PollChart(props) {
       <div id="noVotes">
         No Data for Chart
         <br />
-        <span className="fa fa-pie-chart fa-4x" />
+        <FontAwesomeIcon icon={faPieChart} size="4x" />
       </div>
     </div>
   );

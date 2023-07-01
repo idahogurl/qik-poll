@@ -1,125 +1,115 @@
+import PropTypes from 'prop-types';
+
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
+import { useQuery, useMutation } from '@apollo/client';
+
 import { Formik } from 'formik';
-import { FacebookShareButton, FacebookIcon } from 'react-share';
 
 import GET_POLL from '../../lib/graphql/Poll.gql';
-import GET_POLLS from '../../lib/graphql/PollList.gql';
 import DELETE_POLL from '../../lib/graphql/DeletePoll.gql';
 
 import PollOptionList from '../../lib/components/PollOptionList';
 import PollChart from '../../lib/components/PollChart';
-import { useQuery } from '@apollo/client';
 import Spinner from '../../lib/components/Spinner';
 import ErrorNotification from '../../lib/components/ErrorNotification';
+import FbSharePollButton from '../../lib/components/FbSharePollButton';
+import Layout from '../../lib/components/Layout';
 
-const PollViewer = function PollViewer(props) {
-  const { history, match: { params: { id } } } = props;
-
-  const variables = { id };
-
-  const currentUser = JSON.parse(window.sessionStorage.getItem('currentUser'));
-
+function DeletePollButton({ id }) {
+  const router = useRouter();
+  const [deleteMutation, { error }] = useMutation(DELETE_POLL);
   return (
-    <Mutation
-      mutation={DELETE_POLL}
-      update={(cache) => {
-        const args = { query: GET_POLLS, variables: { order: 'created_at ASC' } };
-        const { polls } = cache.readQuery(args);
-        args.data = { polls: polls.filter((p) => p.id !== id) };
-        cache.writeQuery(args);
+    <Formik
+      initialValues={{ id }}
+      onSubmit={(values, { setSubmitting }) => {
+        deleteMutation({ variables: { id: values.id } })
+          .then(() => {
+            router.push('/polls/my');
+          })
+          .catch(() => {
+            setSubmitting(false);
+          });
       }}
     >
-      {(mutate) => (
-        <Query query={GET_POLL} variables={variables}>
-          {({ loading, error, data }) => {
-            if (loading) return <Loading container="page" />;
-
-            if (error) {
-              onError(error);
-            }
-
-            const { poll } = data;
-
-            return (
-              <Formik
-                onSubmit={(values, { setSubmitting }) => {
-                  mutate({ variables: { id } })
-                    .then(() => history.push('/myPolls'))
-                    .catch((err) => {
-                      setSubmitting(false);
-                      onError(err);
-                    });
-                }}
-
-                render={({
-                  handleSubmit,
-                  isSubmitting,
-                }) => (
-                  <div className="m-3">
-                    <div className="row">
-                      <div className="col-sm-6">
-                        <h1 className="h2">{poll.question}</h1>
-                        <div className="row">
-                          <div className="col col-auto">
-                          <FacebookShareButton
-                            url={`https://qikpoll.herokuapp.com/poll/${id}`}
-        
-      >
-        <FacebookIcon size={32} round />
-      </FacebookShareButton>
-                          </div>
-                          {currentUser && currentUser.id === poll.userId
-                            && (
-                            <div className="col">
-                              <form onSubmit={handleSubmit}>
-                                <button type="submit" className="btn btn-danger" disabled={isSubmitting}>
-                                  {isSubmitting ? (
-                                    <span>
-                                      <Loading container="button" />
-                                      Deleting
-                                    </span>
-                                  ) : 'Delete'}
-                                </button>
-                              </form>
-                            </div>
-                            )}
-                        </div>
-                        <PollOptionList
-                          pollId={id}
-                          pollOptions={poll.pollOptions}
-                          isDeleting={isSubmitting}
-                        />
-                        <div />
-                      </div>
-                      <div className="col-sm-6">
-                        <h2 className="h4">Current Results</h2>
-                        <hr />
-                        <PollChart options={poll.pollOptions} />
-                      </div>
-                    </div>
-                  </div>
-                )}
-              />
-            );
-          }}
-        </Query>
+      {({ handleSubmit, isSubmitting }) => (
+        <div className="col">
+          {error && <ErrorNotification />}
+          <form onSubmit={handleSubmit}>
+            <button type="submit" className="btn btn-danger" disabled={isSubmitting}>
+              {isSubmitting ? (
+                <span>
+                  <Spinner />
+                  Deleting
+                </span>
+              ) : 'Delete'}
+            </button>
+          </form>
+        </div>
       )}
-    </Mutation>
+    </Formik>
   );
+}
+
+DeletePollButton.propTypes = {
+  id: PropTypes.string.isRequired,
 };
 
-export default function Page() {
-  const router = useRouter();
+function PollViewer({ pollId, sessionUserId }) {
   const {
     loading, data, error, refetch,
   } = useQuery(GET_POLL, {
-    variables: { id: router.query.id },
+    variables: { id: pollId },
     fetchPolicy: 'network-only',
   });
 
   if (loading) return <Spinner />;
   if (error) return <ErrorNotification onDismiss={refetch} />;
-  
 
-  return <p>Post: {data.poll.id}</p>
+  const { poll } = data;
+  return (
+    <div className="m-3">
+      <div className="row">
+        <div className="col-sm-6">
+          <h1 className="h2">{poll.question}</h1>
+          <div className="row align-items-center">
+            <div className="col col-auto"><FbSharePollButton pollId={poll.id} /></div>
+            {sessionUserId === poll.userId && <DeletePollButton id={poll.id} /> }
+          </div>
+          <PollOptionList
+            pollId={poll.id}
+            pollOptions={poll.pollOptions}
+            refetch={refetch}
+            // isDeleting={isSubmitting}
+          />
+        </div>
+        <div className="col-sm-6">
+          <h2 className="h4">Current Results</h2>
+          <PollChart options={poll.pollOptions} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+PollViewer.propTypes = {
+  pollId: PropTypes.string.isRequired,
+  sessionUserId: PropTypes.string,
+};
+
+PollViewer.defaultProps = {
+  sessionUserId: undefined,
+};
+
+export default function ViewPoll() {
+  const { data: session, status } = useSession();
+  const loading = status === 'loading';
+  const router = useRouter();
+  return (
+    <Layout>
+      {loading
+        ? <Spinner />
+        : <PollViewer pollId={router.query.id} sessionUserId={session?.user.id} />}
+    </Layout>
+  );
 }

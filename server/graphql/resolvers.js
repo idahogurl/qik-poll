@@ -19,7 +19,7 @@ const parseWhere = function parseWhere(where) {
   return {};
 };
 
-export default {
+const resolvers = {
   UUID: GraphQLToolTypes.UUID({ name: 'UUID', storage: 'string' }),
   JSON: GraphQLToolTypes.JSON({ name: 'JSON' }),
   Date: GraphQLToolTypes.Date({ name: 'Date' }),
@@ -29,7 +29,7 @@ export default {
       await User.create(input);
     },
     updateUser: async (_, { id, input }) => {
-      const user = User.findById(id);
+      const user = User.findByPk(id);
       await user.update(input);
     },
     deleteUser: async (_, { id }) => {
@@ -47,7 +47,7 @@ export default {
       return poll;
     },
     updatePoll: async (_, { id, question }) => {
-      const poll = await Poll.findById(id);
+      const poll = await Poll.findByPk(id);
       poll.question = question;
       await poll.save();
     },
@@ -61,7 +61,7 @@ export default {
       return poll;
     },
     updatePollOption: async (_, { id, option }) => {
-      const pollOption = await PollOption.findById(id);
+      const pollOption = await PollOption.findByPk(id);
       pollOption.update({ option });
       return pollOption;
     },
@@ -70,7 +70,7 @@ export default {
       await PollOption.destroy({ where: { id } });
     },
     vote: async (_, { id, input }) => {
-      const pollOption = await PollOption.findById(id);
+      const pollOption = await PollOption.findByPk(id);
 
       if (!pollOption) {
         const { pollId, option } = input;
@@ -110,7 +110,7 @@ export default {
     user: async (_, {
       id, where,
     }) => {
-      await User.findById(id, { where });
+      await User.findByPk(id, { where });
     },
     polls: async (_, {
       limit, order, where, offset,
@@ -137,7 +137,7 @@ export default {
     pollOption: async (_, {
       id, where,
     }) => {
-      await PollOption.findById(id, { where });
+      await PollOption.findByPk(id, { where });
     },
   },
   User: {
@@ -150,3 +150,5 @@ export default {
     },
   },
 };
+
+export default resolvers;
