@@ -46,16 +46,16 @@
     "react": "^16.4.1",
     "react-apollo": "^2.1.7",
     "react-dom": "^16.8.6",
-    "react-facebook": "^5.0.3",
-    "react-fela": "^7.3.0",
+    "react-facebook": "^6.0.4",
+    "react-fela": "^12.1.0",
     "react-router-dom": "^4.2.2",
     "react-router-prop-types": "^1.0.4",
     "react-vis": "^1.9.4",
     "sequelize": "^5.10.1",
     "sequelize-heroku": "^2.0.0",
     "uuid": "^3.2.1",
-    "webpack": "4.19.0",
-    "webpack-cli": "3.0.4"
+    "webpack": "5.0.0",
+    "webpack-cli": "4.0.0"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.5",
